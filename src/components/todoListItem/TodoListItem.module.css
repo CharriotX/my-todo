@@ -1,0 +1,22 @@
+.todoListItem{
+    width: 250px;
+    height: 100%;
+    border: 1px solid grey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .itemTitle{
+        margin: 10px 0;
+    }
+
+    .itemList{
+        li{
+            margin: 10px;
+
+            span{
+                margin-left: 10px;
+            }
+        }
+    }
+}

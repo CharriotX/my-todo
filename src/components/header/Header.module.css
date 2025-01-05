@@ -1,0 +1,11 @@
+.header{
+    height: 50px;
+
+    .headerContainer{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+    }
+}
