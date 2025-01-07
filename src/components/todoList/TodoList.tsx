@@ -1,32 +1,42 @@
+import { useState } from "react";
+import styles from "./TodoList.module.css";
 import { Container } from "../container/Container";
 import { TodoListItem } from "../todoListItem/TodoListItem";
-import styles from "./TodoList.module.css";
 
-export type Task = {
+export type TaskType = {
+  id: number
+  title: string
+  taskItems: TaskItem[]
+}
+
+export type TaskItem = {
   id: number;
   text: string;
   isDone: boolean;
 };
 
-const task1: Task[] = [
-  { id: 1, text: "WoW", isDone: true },
-  { id: 2, text: "Dota", isDone: true },
-  { id: 3, text: "Sekiro", isDone: false },
-];
+export type FilterValueType = "all" | "active" | "completed";
 
-const task2: Task[] = [
-  { id: 1, text: "Transformers", isDone: true },
-  { id: 2, text: "HP", isDone: true },
-  { id: 3, text: "The Accountant", isDone: false },
-];
 
 export const TodoList = () => {
+  const [filter, setFilter] = useState<FilterValueType>("all")
+  const [tasks, setTasks] = useState<Array<TaskItem>>([
+
+    { id: 1, text: "WoW", isDone: true },
+    { id: 2, text: "Dota", isDone: true },
+    { id: 3, text: "Sekiro", isDone: false },
+  ])
+
+  const deleteTaskItem = (itemId: number) => {
+    setTasks(tasks.filter(item => item.id !== itemId))
+  }
+
+
   return (
     <Container>
       <div className={styles.todoList}>
-        <TodoListItem title="Games" tasks={task1}></TodoListItem>
-        <TodoListItem title="Films" tasks={task2}></TodoListItem>
+        <TodoListItem title="Games" taskItems={tasks} deleteTaskItem={deleteTaskItem}></TodoListItem>
       </div>
-    </Container>
-  );
+    </Container >
+  )
 };

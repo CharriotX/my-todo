@@ -1,36 +1,34 @@
-import { Task } from "../todoList/TodoList";
+import { Button } from "../button/Button";
+import { TaskItem } from "../todoList/TodoList";
 import styles from "./TodoListItem.module.css";
 
 type Props = {
-    title: string,
-    tasks: Task[]
+  title: string,
+  taskItems: TaskItem[],
+  deleteTaskItem: (taskItemId: number) => void
 }
 
-export const TodoListItem = ({title, tasks}: Props) => {
+export const TodoListItem = ({ title, taskItems, deleteTaskItem }: Props) => {
   return (
     <div className={styles.todoListItem}>
-          <h3 className={styles.itemTitle}>{title}</h3>
-          <div>
-            <input type="text" placeholder="new task" />
-            <button>Add</button>
-          </div>
-
-          <div>
-            <ul className={styles.itemList}>
-              <li>
-                <input type="checkbox" checked={true}></input>
-                <span>{tasks[0].text}</span>
+      <h3 className={styles.itemTitle}>{title}</h3>
+      <div>
+        <input type="text" placeholder="new task" />
+        <button>Add</button>
+      </div>
+      <div>
+        <ul className={styles.itemList}>
+          {taskItems.map(item => {
+            return (
+              <li key={item.id}>
+                <input type="checkbox" checked={item.isDone}></input>
+                <span>{item.text}</span>
+                <Button onClickHandler={() => deleteTaskItem(item.id)}>X</Button>
               </li>
-              <li>
-                <input type="checkbox" checked={true}></input>
-                <span>{tasks[1].text}</span>
-              </li>
-              <li>
-                <input type="checkbox" checked={false}></input>
-                <span>{tasks[2].text}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+            )
+          })}
+        </ul>
+      </div>
+    </div>
   )
 };
