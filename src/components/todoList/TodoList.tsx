@@ -18,38 +18,38 @@ export type TaskItem = {
 export type FilterValueType = "all" | "active" | "completed";
 
 export const TodoList = () => {
-  const [filter, setFilter] = useState<FilterValueType>("all");
-  const [tasks, setTasks] = useState<Array<TaskItem>>([
-    { id: 1, text: "WoW", isDone: true },
-    { id: 2, text: "Dota", isDone: true },
-    { id: 3, text: "Sekiro", isDone: false },
+  const [tasks, setTasks] = useState<Array<TaskType>>([
+    {
+      id: 1,
+      title: "Games",
+      taskItems:[
+        { id: 1, text: "WoW", isDone: true },
+        { id: 2, text: "Dota", isDone: true },
+        { id: 3, text: "Sekiro", isDone: false },
+      ]
+    },
+    {
+      id: 2,
+      title: "Films",
+      taskItems:[
+        { id: 4, text: "Harry Potter", isDone: true },
+        { id: 5, text: "The Gentlemens", isDone: true },
+        { id: 6, text: "Lord of the Rings", isDone: false },
+      ]
+    },
   ]);
-
-  const deleteTaskItem = (itemId: number) => {
-    setTasks(tasks.filter((item) => item.id !== itemId));
-  };
-
-  const changeFilter = (filter: FilterValueType) => {
-    setFilter(filter);
-  };
-
-  let filteredTask: Array<TaskItem> = tasks;
-  if (filter === "active") {
-    filteredTask = tasks.filter((tasks) => !tasks.isDone);
-  }
-  if (filter === "completed") {
-    filteredTask = tasks.filter((task) => task.isDone);
-  }
 
   return (
     <Container>
       <div className={styles.todoList}>
-        <TodoListItem
-          title="Games"
-          taskItems={filteredTask}
-          deleteTaskItem={deleteTaskItem}
-          changeFilter={changeFilter}
-        ></TodoListItem>
+        {tasks.map(task => {
+          return (
+            <TodoListItem
+              key={task.id}
+              task={task}
+            ></TodoListItem>
+          )
+        })}
       </div>
     </Container>
   );
