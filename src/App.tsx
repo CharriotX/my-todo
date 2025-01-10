@@ -1,13 +1,13 @@
 import "./App.css";
 import { Header } from "./components/header/Header";
-import { TodoList } from "./components/todoList/TodoList";
+import { TodoAreas } from "./components/todoAreas/TodoAreas";
 
 function App() {
 
   return (
     <>
       <Header></Header>
-      <TodoList></TodoList>
+      <TodoAreas></TodoAreas>
     </>
   );
 }

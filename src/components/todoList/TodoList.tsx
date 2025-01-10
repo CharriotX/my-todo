@@ -2,51 +2,27 @@ import { useState } from "react";
 import styles from "./TodoList.module.css";
 import { Container } from "../container/Container";
 import { TodoListItem } from "../todoListItem/TodoListItem";
-
-export type TaskType = {
-  id: number;
-  title: string;
-  taskItems: TaskItem[];
-};
-
-export type TaskItem = {
-  id: number;
-  text: string;
-  isDone: boolean;
-};
+import { TodoListType } from "../todoAreas/TodoAreas";
+import { Button } from "../button/Button";
+import { TodoStatusType } from "../todoArea/TodoArea";
 
 export type FilterValueType = "all" | "active" | "completed";
+type Props = {
+  todoLists: TodoListType[]
+  changeStatus: (status: TodoStatusType, todoId: number) => void
+}
 
-export const TodoList = () => {
-  const [tasks, setTasks] = useState<Array<TaskType>>([
-    {
-      id: 1,
-      title: "Games",
-      taskItems:[
-        { id: 1, text: "WoW", isDone: true },
-        { id: 2, text: "Dota", isDone: true },
-        { id: 3, text: "Sekiro", isDone: false },
-      ]
-    },
-    {
-      id: 2,
-      title: "Films",
-      taskItems:[
-        { id: 4, text: "Harry Potter", isDone: true },
-        { id: 5, text: "The Gentlemens", isDone: true },
-        { id: 6, text: "Lord of the Rings", isDone: false },
-      ]
-    },
-  ]);
+export const TodoList = ({ todoLists, changeStatus }: Props) => {
 
   return (
     <Container>
       <div className={styles.todoList}>
-        {tasks.map(task => {
+        {todoLists.map(list => {
           return (
             <TodoListItem
-              key={task.id}
-              task={task}
+              key={list.id}
+              todoList={list}
+              changeStatus={changeStatus}
             ></TodoListItem>
           )
         })}

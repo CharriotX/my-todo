@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { Button } from "../button/Button";
-import { FilterValueType, TaskItem, TaskType } from "../todoList/TodoList";
+import { FilterValueType } from "../todoList/TodoList";
 import styles from "./TodoListItem.module.css";
+import { TodoItem, TodoListType } from "../todoAreas/TodoAreas";
+import { TodoStatusType } from "../todoArea/TodoArea";
 
 type Props = {
   title?: string,
-  task: TaskType,
+  todoList: TodoListType,
+  changeStatus: (status: TodoStatusType, todoId: number) => void
 }
 
-export const TodoListItem = ({task}: Props) => {
-  const [taskItems, setTaskItems] = useState(task.taskItems)
+export const TodoListItem = ({ todoList, changeStatus }: Props) => {
+  const [taskItems, setTaskItems] = useState(todoList.todoItems)
   const [filter, setFilter] = useState<FilterValueType>("all");
 
-  const deleteTaskItem = ( itemId: number) => {
+  const deleteTaskItem = (itemId: number) => {
     setTaskItems(taskItems.filter((item) => item.id !== itemId));
   };
 
@@ -20,7 +23,7 @@ export const TodoListItem = ({task}: Props) => {
     setFilter(filter);
   };
 
-  let filteredTaskItems: Array<TaskItem> = taskItems;
+  let filteredTaskItems: Array<TodoItem> = taskItems;
   if (filter === "active") {
     filteredTaskItems = taskItems.filter((item) => !item.isDone);
   }
@@ -29,8 +32,8 @@ export const TodoListItem = ({task}: Props) => {
   }
 
   const onSelectItem = (itemId: number, isDone: boolean) => {
-    setTaskItems(taskItems.map((item)=>{
-      if(item.id === itemId){
+    setTaskItems(taskItems.map((item) => {
+      if (item.id === itemId) {
         item.isDone = !isDone
         return item
       } else {
@@ -41,7 +44,7 @@ export const TodoListItem = ({task}: Props) => {
 
   return (
     <div className={styles.todoListItem}>
-      <h3 className={styles.itemTitle}>{task.title}</h3>
+      <h3 className={styles.itemTitle}>{todoList.title}</h3>
       <div>
         <input type="text" placeholder="new task" />
         <button>Add</button>
@@ -62,6 +65,9 @@ export const TodoListItem = ({task}: Props) => {
           <Button onClickHandler={() => changeFilter("all")}>All</Button>
           <Button onClickHandler={() => changeFilter("active")}>Active</Button>
           <Button onClickHandler={() => changeFilter("completed")}>Completed</Button>
+        </div>
+        <div>
+          <Button onClickHandler={() => changeStatus(todoList.status, todoList.id)}>Completed</Button>
         </div>
       </div>
     </div>
