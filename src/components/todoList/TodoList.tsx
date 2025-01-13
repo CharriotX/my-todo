@@ -1,9 +1,7 @@
-import { useState } from "react";
 import styles from "./TodoList.module.css";
 import { Container } from "../container/Container";
 import { TodoListItem } from "../todoListItem/TodoListItem";
 import { TodoListType } from "../todoAreas/TodoAreas";
-import { Button } from "../button/Button";
 import { TodoStatusType } from "../todoArea/TodoArea";
 
 export type FilterValueType = "all" | "active" | "completed";
