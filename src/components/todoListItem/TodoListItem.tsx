@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Button } from "../button/Button";
 import { FilterValueType } from "../todoList/TodoList";
 import styles from "./TodoListItem.module.css";
 import { TodoItem, TodoListType } from "../todoAreas/TodoAreas";
 import { TodoStatusType } from "../todoArea/TodoArea";
+import { Input } from "../input/Input";
 
 type Props = {
   title?: string,
@@ -14,6 +15,7 @@ type Props = {
 export const TodoListItem = ({ todoList, changeStatus }: Props) => {
   const [taskItems, setTaskItems] = useState(todoList.todoItems)
   const [filter, setFilter] = useState<FilterValueType>("all");
+  const [taskInputTitle, setTaskInputTitle] = useState<string>("")
 
   const deleteTaskItem = (itemId: number) => {
     setTaskItems(taskItems.filter((item) => item.id !== itemId));
@@ -22,6 +24,22 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
   const changeFilter = (filter: FilterValueType) => {
     setFilter(filter);
   };
+
+  const createTaskHandler = () => {
+    setTaskItems([...taskItems, { id: 33, text: taskInputTitle, isDone: false }])
+    setTaskInputTitle(" ")
+  }
+
+  const onChangeTaskInputTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setTaskInputTitle(e.target.value)
+  }
+
+  const createTaskOnEnterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setTaskItems([...taskItems, { id: 33, text: taskInputTitle, isDone: false }])
+      setTaskInputTitle(" ")
+    }
+  }
 
   let filteredTaskItems: Array<TodoItem> = taskItems;
   if (filter === "active") {
@@ -45,18 +63,23 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
   return (
     <div className={styles.todoListItem}>
       <h3 className={styles.itemTitle}>{todoList.title}</h3>
-      <div>
-        <input type="text" placeholder="new task" />
-        <button>Add</button>
+      <div className={styles.inputBlock}>
+        <Input type="text" placeholder="new task" value={taskInputTitle} onChange={onChangeTaskInputTitle} onKeyDown={createTaskOnEnterHandler} />
+        <Button onClickHandler={createTaskHandler}>
+          Add
+        </Button>
       </div>
       <div>
         <ul className={styles.itemList}>
           {filteredTaskItems.map(item => {
+            const deleteTaskItemhandler = () => {
+              deleteTaskItem(item.id)
+            }
             return (
               <li key={item.id}>
                 <input type="checkbox" checked={item.isDone} onChange={() => onSelectItem(item.id, item.isDone)}></input>
                 <span>{item.text}</span>
-                <Button onClickHandler={() => deleteTaskItem(item.id)}>X</Button>
+                <Button onClickHandler={deleteTaskItemhandler}>X</Button>
               </li>
             )
           })}
@@ -67,9 +90,11 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
           <Button onClickHandler={() => changeFilter("completed")}>Completed</Button>
         </div>
         <div>
-          <Button onClickHandler={() => changeStatus(todoList.status, todoList.id)}>Completed</Button>
+          <Button onClickHandler={() => changeStatus(todoList.status, todoList.id)}>
+            {todoList.status !== "Completed" ? "Change status" : "Complete task"}
+          </Button>
         </div>
       </div>
-    </div>
+    </div >
   )
 };
