@@ -1,7 +1,7 @@
 .todoList {
     margin-top: 60px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
     flex-wrap: wrap;
     gap: 20px;
 }

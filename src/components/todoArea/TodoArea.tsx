@@ -8,11 +8,12 @@ type Props = {
     title: TodoStatusType,
     todoLists: TodoListType[],
     changeStatus: (status: TodoStatusType, todoId: number) => void
+    themeBg: string
 }
 
-export const TodoArea = ({ title, todoLists, changeStatus }: Props) => {
+export const TodoArea = ({ title, todoLists, changeStatus, themeBg }: Props) => {
     return (
-        <div className={styles.todoArea}>
+        <div className={styles.todoArea} style={{background: `${themeBg}`}}>
             <h2>{title}</h2>
             <TodoList todoLists={todoLists} changeStatus={changeStatus}></TodoList>
         </div>

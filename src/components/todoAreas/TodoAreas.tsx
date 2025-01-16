@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TodoArea, TodoStatusType } from "../todoArea/TodoArea"
 import styles from "./TodoAreas.module.css"
+import { theme } from "../../styles/Theme";
 
 export type TodoListType = {
     id: number;
@@ -66,9 +67,9 @@ export const TodoAreas = () => {
 
     return (
         <div className={styles.todoAreas}>
-            <TodoArea title="Todo" todoLists={todoList} changeStatus={changeStatus}></TodoArea>
-            <TodoArea title="In Progress" changeStatus={changeStatus} todoLists={progressList}></TodoArea>
-            <TodoArea title="Completed" changeStatus={changeStatus} todoLists={completedList}></TodoArea>
+            <TodoArea title="Todo" todoLists={todoList} changeStatus={changeStatus} themeBg={theme.colors.todoStatusBg}></TodoArea>
+            <TodoArea title="In Progress" changeStatus={changeStatus} todoLists={progressList} themeBg={theme.colors.inProgressStatusBg}></TodoArea>
+            <TodoArea title="Completed" changeStatus={changeStatus} todoLists={completedList} themeBg={theme.colors.completeStatusBg}></TodoArea>
         </div>
     )
 }

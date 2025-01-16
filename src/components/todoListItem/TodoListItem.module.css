@@ -1,17 +1,19 @@
 .todoListItem {
-    max-width: 350px;
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    width: 220px;
     border: 1px solid grey;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.6);
 
     .itemTitle {
         margin: 10px 0;
     }
 
-    .itemList {
+    .itemList {       
         li {
             margin: 10px;
 
