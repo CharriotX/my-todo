@@ -3,10 +3,9 @@ import { Header } from "./components/header/Header";
 import { TodoAreas } from "./components/todoAreas/TodoAreas";
 
 function App() {
-
   return (
     <>
-      <Header></Header>
+      <Header></Header>     
       <TodoAreas></TodoAreas>
     </>
   );

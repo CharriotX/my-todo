@@ -3,10 +3,10 @@ import { ChangeEvent } from "react"
 type Props = {
     children?: React.ReactNode
     type: string
-    placeholder: string
+    placeholder?: string
     value: string
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void
-    onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void
+    onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 export const Input = ({ children, type, placeholder, value, onChange, onKeyDown }: Props) => {

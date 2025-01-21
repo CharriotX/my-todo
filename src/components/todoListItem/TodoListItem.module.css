@@ -13,7 +13,8 @@
         margin: 10px 0;
     }
 
-    .itemList {       
+    .itemList {
+        min-height: 100px;    
         li {
             margin: 10px;
 
@@ -21,5 +22,24 @@
                 margin-left: 10px;
             }
         }
+
+        li button {
+            margin-left: 5px;
+        }
+
+        li button:hover {
+            background-color: crimson;
+            color: white;
+        }
+    }
+    .filterButtons{
+        button {
+            margin: 5px;
+        }
+    }
+
+    .buttonActive{
+        background-color: rgb(87, 73, 136);
+        color: white
     }
 }

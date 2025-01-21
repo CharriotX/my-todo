@@ -49,6 +49,18 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
     }
   };
 
+  const onStatusChange = () => {
+    if (taskItems.every((task) => task.isDone === false)) {
+      changeStatus("Todo", todoList.id);
+    }
+    if (taskItems.some((task) => task.isDone === true)) {
+      changeStatus("In Progress", todoList.id);
+    }
+    if (taskItems.every((task) => task.isDone === true)) {
+      changeStatus("Completed", todoList.id);
+    }
+  };
+
   let filteredTaskItems: Array<TodoItem> = taskItems;
   if (filter === "active") {
     filteredTaskItems = taskItems.filter((item) => !item.isDone);
@@ -58,7 +70,6 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
   }
 
   const onSelectItem = (itemId: number, isDone: boolean) => {
-    //смена статуса по нажатию на чекбокс
     setTaskItems(
       taskItems.map((item) => {
         if (item.id === itemId) {
@@ -69,6 +80,7 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
         }
       })
     );
+    onStatusChange();
   };
 
   return (
@@ -99,18 +111,24 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
             );
           })}
         </ul>
-        <div>
-          <Button onClickHandler={() => changeFilter("all")}>All</Button>
-          <Button onClickHandler={() => changeFilter("active")}>Active</Button>
-          <Button onClickHandler={() => changeFilter("completed")}>
-            Completed
-          </Button>
-        </div>
-        <div>
+        <div className={styles.filterButtons}>
           <Button
-            onClickHandler={() => changeStatus(todoList.status, todoList.id)}
+            onClickHandler={() => changeFilter("all")}
+            classes={filter === "all" ? styles.buttonActive  : ""}
           >
-            {todoList.status !== "Completed" ? "Change status" : "Done"}
+            All
+          </Button>
+          <Button
+            onClickHandler={() => changeFilter("active")}
+            classes={filter === "active" ? styles.buttonActive  : ""}
+          >
+            Active
+          </Button>
+          <Button
+            onClickHandler={() => changeFilter("completed")}
+            classes={filter === "completed" ? styles.buttonActive : ""}
+          >
+            Completed
           </Button>
         </div>
       </div>
