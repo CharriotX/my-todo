@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { TodoArea, TodoStatusType } from "../todoArea/TodoArea";
 import styles from "./TodoAreas.module.css";
 import { theme } from "../../styles/Theme";
+import { Modal } from "../modal/Modal";
+import { CreateTodoForm } from "./createTodoForm/CreateTodoForm";
+import { Button } from "../button/Button";
 
-export type TodoListType = {
+export type TodoType = {
   id: number;
   title: string;
   status: TodoStatusType;
@@ -11,21 +14,21 @@ export type TodoListType = {
 };
 
 export type TodoItem = {
-  id: number;
+  id: string;
   text: string;
   isDone: boolean;
 };
 
 export const TodoAreas = () => {
-  const [todos, setTodos] = useState<Array<TodoListType>>([
+  const [todos, setTodos] = useState<Array<TodoType>>([
     {
       id: 1,
       title: "Games",
       status: "Todo",
       todoItems: [
-        { id: 1, text: "WoW", isDone: false },
-        { id: 2, text: "Dota", isDone: false },
-        { id: 3, text: "Sekiro", isDone: false },
+        { id: "1", text: "WoW", isDone: false },
+        { id: "2", text: "Dota", isDone: false },
+        { id: "3", text: "Sekiro", isDone: false },
       ],
     },
     {
@@ -33,22 +36,24 @@ export const TodoAreas = () => {
       title: "Films",
       status: "Todo",
       todoItems: [
-        { id: 4, text: "Harry Potter", isDone: false },
-        { id: 5, text: "The Gentlemens", isDone: false },
-        { id: 6, text: "Lord of the Rings", isDone: false },
+        { id: "4", text: "Harry Potter", isDone: false },
+        { id: "5", text: "The Gentlemens", isDone: false },
+        { id: "6", text: "Lord of the Rings", isDone: false },
       ],
     },
   ]);
-  const [todoList, setTodoList] = useState<Array<TodoListType>>([]);
-  const [progressList, setProgressList] = useState<Array<TodoListType>>([]);
-  const [completedList, setCompletedList] = useState<Array<TodoListType>>([]);
+  const [todoList, setTodoList] = useState<Array<TodoType>>([]);
+  const [progressList, setProgressList] = useState<Array<TodoType>>([]);
+  const [completedList, setCompletedList] = useState<Array<TodoType>>([]);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+
   useEffect(() => {
     progressTodosHandler()
   }, [todos])
 
   const changeStatus = (status: TodoStatusType, todoId: number) => {
-   const newState = todos.map(todo => todo.id === todoId ? {...todo, status} : todo)
-   setTodos(newState)
+    const newState = todos.map(todo => todo.id === todoId ? { ...todo, status } : todo)
+    setTodos(newState)
   };
 
   const progressTodosHandler = () => {
@@ -59,6 +64,11 @@ export const TodoAreas = () => {
     let completed = todos.filter(item => item.status === "Completed");
     setCompletedList(completed)
   };
+
+  const createTask = (newTodo: TodoType) => {
+    console.log(newTodo)
+    setTodos([...todos, newTodo])
+  }
 
   return (
     <div className={styles.todoAreas}>
@@ -80,6 +90,12 @@ export const TodoAreas = () => {
         todoLists={completedList}
         themeBg={theme.colors.completeStatusBg}
       ></TodoArea>
+      <div className={styles.addTaskButton}>
+        <Button classes={styles.addButton} onClickHandler={() => setIsOpenModal(true)}>+</Button>
+        <Modal active={isOpenModal} setActive={setIsOpenModal}>
+          <CreateTodoForm createTask={createTask}></CreateTodoForm>
+        </Modal>
+      </div>
     </div>
   );
 };

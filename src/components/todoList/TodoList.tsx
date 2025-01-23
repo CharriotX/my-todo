@@ -1,11 +1,11 @@
 import styles from "./TodoList.module.css";
 import { TodoListItem } from "../todoListItem/TodoListItem";
-import { TodoListType } from "../todoAreas/TodoAreas";
+import { TodoType } from "../todoAreas/TodoAreas";
 import { TodoStatusType } from "../todoArea/TodoArea";
 
 export type FilterValueType = "all" | "active" | "completed";
 type Props = {
-  todoLists: TodoListType[];
+  todoLists: TodoType[];
   changeStatus: (status: TodoStatusType, todoId: number) => void;
 };
 

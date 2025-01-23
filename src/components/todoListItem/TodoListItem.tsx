@@ -2,13 +2,13 @@ import { ChangeEvent, useState } from "react";
 import { Button } from "../button/Button";
 import { FilterValueType } from "../todoList/TodoList";
 import styles from "./TodoListItem.module.css";
-import { TodoItem, TodoListType } from "../todoAreas/TodoAreas";
+import { TodoItem, TodoType } from "../todoAreas/TodoAreas";
 import { TodoStatusType } from "../todoArea/TodoArea";
 import TodoListItemInput from "./todoListIteminput/TodoListItemInput";
 
 type Props = {
   title?: string;
-  todoList: TodoListType;
+  todoList: TodoType;
   changeStatus: (status: TodoStatusType, todoId: number) => void;
 };
 
@@ -17,7 +17,7 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
   const [filter, setFilter] = useState<FilterValueType>("all");
   const [taskInputTitle, setTaskInputTitle] = useState<string>("");
 
-  const deleteTaskItem = (itemId: number) => {
+  const deleteTaskItem = (itemId: string) => {
     setTaskItems(taskItems.filter((item) => item.id !== itemId));
   };
 
@@ -28,7 +28,7 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
   const createTaskHandler = () => {
     setTaskItems([
       ...taskItems,
-      { id: 33, text: taskInputTitle, isDone: false },
+      { id: "33", text: taskInputTitle, isDone: false },
     ]);
     setTaskInputTitle(" ");
   };
@@ -43,7 +43,7 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
     if (e.key === "Enter") {
       setTaskItems([
         ...taskItems,
-        { id: 33, text: taskInputTitle, isDone: false },
+        { id: "33", text: taskInputTitle, isDone: false },
       ]);
       setTaskInputTitle(" ");
     }
@@ -69,7 +69,7 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
     filteredTaskItems = taskItems.filter((item) => item.isDone);
   }
 
-  const onSelectItem = (itemId: number, isDone: boolean) => {
+  const onSelectItem = (itemId: string, isDone: boolean) => {
     setTaskItems(
       taskItems.map((item) => {
         if (item.id === itemId) {
@@ -114,13 +114,13 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
         <div className={styles.filterButtons}>
           <Button
             onClickHandler={() => changeFilter("all")}
-            classes={filter === "all" ? styles.buttonActive  : ""}
+            classes={filter === "all" ? styles.buttonActive : ""}
           >
             All
           </Button>
           <Button
             onClickHandler={() => changeFilter("active")}
-            classes={filter === "active" ? styles.buttonActive  : ""}
+            classes={filter === "active" ? styles.buttonActive : ""}
           >
             Active
           </Button>

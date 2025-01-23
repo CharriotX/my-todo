@@ -1,0 +1,39 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .formBlock {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .formLabel {
+        margin: 10px 0;
+    }
+
+    input {
+        padding: 5px;
+        border: 1px solid gray;
+        border-radius: 5px;
+    }
+
+
+    .taskBlock {
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+    }
+
+    .createButton {
+        margin-top: 20px;
+
+        button {
+            background-color: blueviolet;
+            color: white;
+            padding: 10px;
+        }
+    }
+}
