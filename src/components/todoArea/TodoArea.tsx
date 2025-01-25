@@ -7,7 +7,7 @@ export type TodoStatusType = "Todo" | "In Progress" | "Completed";
 type Props = {
     title: TodoStatusType,
     todoLists: TodoType[],
-    changeStatus: (status: TodoStatusType, todoId: number) => void
+    changeStatus: (status: TodoStatusType, todoId: string) => void
     themeBg: string
 }
 

@@ -1,6 +1,6 @@
 .todoListItem {
     max-width: 100%;
-    width: 220px;
+    width: 200px;
     border: 1px solid grey;
     border-radius: 10px;
     display: flex;
@@ -14,7 +14,8 @@
     }
 
     .itemList {
-        min-height: 100px;    
+        min-height: 100px;
+
         li {
             margin: 10px;
 
@@ -32,13 +33,14 @@
             color: white;
         }
     }
-    .filterButtons{
+
+    .filterButtons {
         button {
             margin: 5px;
         }
     }
 
-    .buttonActive{
+    .buttonActive {
         background-color: rgb(87, 73, 136);
         color: white
     }

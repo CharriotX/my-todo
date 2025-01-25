@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TodoArea, TodoStatusType } from "../todoArea/TodoArea";
 import styles from "./TodoAreas.module.css";
 import { theme } from "../../styles/Theme";
 import { Modal } from "../modal/Modal";
 import { CreateTodoForm } from "./createTodoForm/CreateTodoForm";
 import { Button } from "../button/Button";
+import { v1 } from "uuid";
 
 export type TodoType = {
-  id: number;
+  id: string;
   title: string;
   status: TodoStatusType;
-  todoItems: TodoItem[];
+  todoTasks: TodoTask[]
 };
 
-export type TodoItem = {
+export type TodoTask = {
   id: string;
   text: string;
   isDone: boolean;
@@ -22,80 +23,69 @@ export type TodoItem = {
 export const TodoAreas = () => {
   const [todos, setTodos] = useState<Array<TodoType>>([
     {
-      id: 1,
+      id: v1(),
       title: "Games",
       status: "Todo",
-      todoItems: [
-        { id: "1", text: "WoW", isDone: false },
-        { id: "2", text: "Dota", isDone: false },
-        { id: "3", text: "Sekiro", isDone: false },
-      ],
+      todoTasks: [
+        { id: v1(), text: "Dota", isDone: false },
+        { id: v1(), text: "The Witcher", isDone: false },
+        { id: v1(), text: "WoW", isDone: false }
+      ]
     },
     {
-      id: 2,
+      id: v1(),
       title: "Films",
       status: "Todo",
-      todoItems: [
-        { id: "4", text: "Harry Potter", isDone: false },
-        { id: "5", text: "The Gentlemens", isDone: false },
-        { id: "6", text: "Lord of the Rings", isDone: false },
-      ],
+      todoTasks: [
+        { id: v1(), text: "Seven", isDone: false },
+        { id: v1(), text: "Iron man", isDone: false },
+        { id: v1(), text: "Tenet", isDone: false }
+      ]
     },
   ]);
-  const [todoList, setTodoList] = useState<Array<TodoType>>([]);
-  const [progressList, setProgressList] = useState<Array<TodoType>>([]);
-  const [completedList, setCompletedList] = useState<Array<TodoType>>([]);
+
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
 
-  useEffect(() => {
-    progressTodosHandler()
-  }, [todos])
-
-  const changeStatus = (status: TodoStatusType, todoId: number) => {
+  const changeStatus = (status: TodoStatusType, todoId: string) => {
     const newState = todos.map(todo => todo.id === todoId ? { ...todo, status } : todo)
     setTodos(newState)
   };
 
-  const progressTodosHandler = () => {
-    let todo = todos.filter(item => item.status === "Todo");
-    setTodoList(todo)
-    let progress = todos.filter(item => item.status === "In Progress");
-    setProgressList(progress)
-    let completed = todos.filter(item => item.status === "Completed");
-    setCompletedList(completed)
-  };
-
   const createTask = (newTodo: TodoType) => {
-    console.log(newTodo)
     setTodos([...todos, newTodo])
+    setIsOpenModal(false)
   }
 
+  let todo = todos.filter(item => item.status === "Todo")
+  let progress = todos.filter(item => item.status === "In Progress")
+  let completed = todos.filter(item => item.status === "Completed")
+
   return (
-    <div className={styles.todoAreas}>
+    <div className={styles.todoAreas} >
       <TodoArea
         title="Todo"
-        todoLists={todoList}
+        todoLists={todo}
         changeStatus={changeStatus}
         themeBg={theme.colors.todoStatusBg}
       ></TodoArea>
       <TodoArea
         title="In Progress"
         changeStatus={changeStatus}
-        todoLists={progressList}
+        todoLists={progress}
         themeBg={theme.colors.inProgressStatusBg}
       ></TodoArea>
       <TodoArea
         title="Completed"
         changeStatus={changeStatus}
-        todoLists={completedList}
+        todoLists={completed}
         themeBg={theme.colors.completeStatusBg}
       ></TodoArea>
       <div className={styles.addTaskButton}>
-        <Button classes={styles.addButton} onClickHandler={() => setIsOpenModal(true)}>+</Button>
+        <Button classes={styles.addButton} onClick={() => setIsOpenModal(true)}>+</Button>
         <Modal active={isOpenModal} setActive={setIsOpenModal}>
           <CreateTodoForm createTask={createTask}></CreateTodoForm>
         </Modal>
       </div>
-    </div>
+    </div >
   );
 };

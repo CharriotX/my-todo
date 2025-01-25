@@ -6,7 +6,7 @@ import { TodoStatusType } from "../todoArea/TodoArea";
 export type FilterValueType = "all" | "active" | "completed";
 type Props = {
   todoLists: TodoType[];
-  changeStatus: (status: TodoStatusType, todoId: number) => void;
+  changeStatus: (status: TodoStatusType, todoId: string) => void;
 };
 
 export const TodoList = ({ todoLists, changeStatus }: Props) => {

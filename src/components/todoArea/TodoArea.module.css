@@ -1,6 +1,6 @@
 .todoArea {
     width: 33.33%;
-    height: calc(100vh - 50px);
+    min-height: calc(100vh - 50px);
     text-align: center;
     padding: 10px 15px;
 }

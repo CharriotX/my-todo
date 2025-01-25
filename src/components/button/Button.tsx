@@ -1,20 +1,14 @@
-import React from "react"
+import { ButtonHTMLAttributes } from "react"
 import styles from "./Button.module.css"
 
-type Props = {
-    children: React.ReactNode
-    onClickHandler: () => void
-    classes?: string | CSSModuleClasses
-    disabled?: false
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+    classes?: CSSModuleClasses | string
 }
 
-export const Button = ({ children, onClickHandler, classes, disabled }: Props) => {
-    const clickHandler = () => {
-        onClickHandler()
-    }
+export const Button = ({ children, onClick, disabled, classes }: ButtonProps) => {
 
     return (
-        <button disabled={disabled} className={styles.myButton + " " + classes} onClick={clickHandler}>
+        <button disabled={disabled} className={styles.myButton + " " + classes} onClick={onClick}>
             {children}
         </button>
     )

@@ -1,8 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import { Input } from "../../input/Input";
-import { TodoItem, TodoType } from "../TodoAreas";
+import { TodoTask, TodoType } from "../TodoAreas";
 import { Button } from "../../button/Button";
 import styles from "./CreateTodoForm.module.css"
+import { v1 } from "uuid";
 
 type Props = {
   createTask: (task: TodoType) => void
@@ -10,9 +11,7 @@ type Props = {
 
 export const CreateTodoForm = ({ createTask }: Props) => {
   const [title, setTitle] = useState<string>("");
-  const [taskList, setTaskList] = useState<Array<TodoItem>>([
-    { id: "111", text: "", isDone: false }
-  ]);
+  const [taskList, setTaskList] = useState<Array<TodoTask>>([]);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -21,12 +20,12 @@ export const CreateTodoForm = ({ createTask }: Props) => {
   }
 
   const createTaskHandler = () => {
-    const newTask: TodoType = { id: 22, status: "Todo", title: title, todoItems: taskList }
+    const newTask: TodoType = { id: v1(), status: "Todo", title: title, todoTasks: taskList }
     createTask(newTask)
   }
 
   return (
-    <form className={styles.form} onSubmit={createTaskHandler}>
+    <div className={styles.form}>
       <div className={styles.formBlock}>
         <div className={styles.formLabel}>Enter title</div>
         <Input type="text" value={title} onChange={(e) => setTitle(e.target.value)}></Input>
@@ -44,8 +43,8 @@ export const CreateTodoForm = ({ createTask }: Props) => {
         </div>
       </div>
       <div className={styles.createButton}>
-        <Button onClickHandler={createTaskHandler}>Create task</Button>
+        <Button onClick={createTaskHandler}>Create task</Button>
       </div>
-    </form>
+    </div>
   );
 };
