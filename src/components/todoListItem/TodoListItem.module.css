@@ -45,3 +45,19 @@
         color: white
     }
 }
+
+.todoListItem.completed:not(.completedTodoButton) {
+    background: lightgray;
+
+
+    button:not(.completedTodoButton) {
+        background: lightgrey;
+        cursor: auto;
+        color: white
+    }
+
+    .completedTodoButton {
+        background: crimson;
+        color: white;
+    }
+}

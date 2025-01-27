@@ -8,9 +8,10 @@ type Props = {
     name?: string
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+    disabled?: boolean
 }
 
-export const Input = ({ children, type, placeholder, value, name, onChange, onKeyDown }: Props) => {
+export const Input = ({ children, type, placeholder, value, name, onChange, onKeyDown, disabled }: Props) => {
     return (
         <input
             name={name}
@@ -19,6 +20,7 @@ export const Input = ({ children, type, placeholder, value, name, onChange, onKe
             value={value}
             onChange={onChange}
             onKeyDown={onKeyDown}
+            disabled={disabled}
         >
             {children}
         </input>

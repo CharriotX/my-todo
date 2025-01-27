@@ -8,6 +8,7 @@ type Props = {
   onChangeTaskInputTitle: (e: ChangeEvent<HTMLInputElement>) => void;
   createTaskOnEnterHandler: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   createTaskHandler: () => void;
+  disabled: boolean
 };
 
 const TodoListItemInput = ({
@@ -15,7 +16,9 @@ const TodoListItemInput = ({
   onChangeTaskInputTitle,
   createTaskOnEnterHandler,
   createTaskHandler,
+  disabled
 }: Props) => {
+
   return (
     <div className={styles.inputBlock}>
       <Input
@@ -24,6 +27,7 @@ const TodoListItemInput = ({
         value={taskInputTitle}
         onChange={onChangeTaskInputTitle}
         onKeyDown={createTaskOnEnterHandler}
+        disabled={disabled}
       />
       <Button onClick={createTaskHandler}>Add</Button>
     </div>

@@ -7,9 +7,10 @@ export type FilterValueType = "all" | "active" | "completed";
 type Props = {
   todoLists: TodoType[];
   changeStatus: (status: TodoStatusType, todoId: string) => void;
+  deleteTodo: (todoId: string) => void
 };
 
-export const TodoList = ({ todoLists, changeStatus }: Props) => {
+export const TodoList = ({ todoLists, changeStatus, deleteTodo }: Props) => {
   return (
     <div className={styles.todoList}>
       {todoLists.map((list) => {
@@ -18,6 +19,7 @@ export const TodoList = ({ todoLists, changeStatus }: Props) => {
             key={list.id}
             todoList={list}
             changeStatus={changeStatus}
+            deleteTodo={deleteTodo}
           ></TodoListItem>
         );
       })}

@@ -1,6 +1,6 @@
-.inputBlock{
+.inputBlock {
     display: flex;
-    flex-direction:  column;
+    flex-direction: column;
     align-items: center;
     gap: 10px;
 
@@ -16,5 +16,10 @@
         padding: 5px 10px;
         border: none;
         background-color: rgb(87, 73, 136);
+    }
+
+    .errorText {
+        font-size: 14px;
+        color: crimson;
     }
 }

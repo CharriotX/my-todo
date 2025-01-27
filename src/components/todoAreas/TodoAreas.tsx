@@ -43,7 +43,6 @@ export const TodoAreas = () => {
       ]
     },
   ]);
-
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
 
   const changeStatus = (status: TodoStatusType, todoId: string) => {
@@ -56,9 +55,13 @@ export const TodoAreas = () => {
     setIsOpenModal(false)
   }
 
-  let todo = todos.filter(item => item.status === "Todo")
-  let progress = todos.filter(item => item.status === "In Progress")
-  let completed = todos.filter(item => item.status === "Completed")
+  const deleteTodo = (todoId: string) => {
+    setTodos(todos.filter(item => item.id !== todoId))
+  }
+
+  const todo = todos.filter(item => item.status === "Todo")
+  const progress = todos.filter(item => item.status === "In Progress")
+  const completed = todos.filter(item => item.status === "Completed")
 
   return (
     <div className={styles.todoAreas} >
@@ -67,18 +70,21 @@ export const TodoAreas = () => {
         todoLists={todo}
         changeStatus={changeStatus}
         themeBg={theme.colors.todoStatusBg}
+        deleteTodo={deleteTodo}
       ></TodoArea>
       <TodoArea
         title="In Progress"
         changeStatus={changeStatus}
         todoLists={progress}
         themeBg={theme.colors.inProgressStatusBg}
+        deleteTodo={deleteTodo}
       ></TodoArea>
       <TodoArea
         title="Completed"
         changeStatus={changeStatus}
         todoLists={completed}
         themeBg={theme.colors.completeStatusBg}
+        deleteTodo={deleteTodo}
       ></TodoArea>
       <div className={styles.addTaskButton}>
         <Button classes={styles.addButton} onClick={() => setIsOpenModal(true)}>+</Button>

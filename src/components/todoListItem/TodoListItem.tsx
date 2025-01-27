@@ -11,9 +11,10 @@ type Props = {
   title?: string;
   todoList: TodoType;
   changeStatus: (status: TodoStatusType, todoId: string) => void;
+  deleteTodo: (todoId: string) => void
 };
 
-export const TodoListItem = ({ todoList, changeStatus }: Props) => {
+export const TodoListItem = ({ todoList, changeStatus, deleteTodo }: Props) => {
   const [taskItems, setTaskItems] = useState<TodoTask[]>(todoList.todoTasks);
   const [filter, setFilter] = useState<FilterValueType>("all");
   const [taskInputTitle, setTaskInputTitle] = useState<string>("");
@@ -33,6 +34,10 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
     ]);
     setTaskInputTitle("");
   };
+
+  const deleteTodoHandler = () => {
+    deleteTodo(todoList.id)
+  }
 
   const onChangeTaskInputTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setTaskInputTitle(e.target.value);
@@ -85,16 +90,18 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
   };
 
   return (
-    <div className={styles.todoListItem}>
+    <div className={todoList.status === "Completed" ? styles.todoListItem + " " + styles.completed : styles.todoListItem}>
       <h3 className={styles.itemTitle}>{todoList.title}</h3>
       <TodoListItemInput
         taskInputTitle={taskInputTitle}
         createTaskHandler={createTaskHandler}
         onChangeTaskInputTitle={onChangeTaskInputTitle}
         createTaskOnEnterHandler={createTaskOnEnterHandler}
+        disabled={todoList.status === "Completed" ? true : false}
       />
       <div>
         <ul className={styles.itemList}>
+          {taskItems.length === 0 && <div>No tasks</div>}
           {filteredTaskItems.map((item) => {
             const deleteTaskItemhandler = () => {
               deleteTaskItem(item.id);
@@ -107,7 +114,7 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
                   onChange={() => onSelectItem(item.id, item.isDone)}
                 ></input>
                 <span>{item.text}</span>
-                <Button onClick={deleteTaskItemhandler}>X</Button>
+                <Button onClick={deleteTaskItemhandler} disabled={todoList.status === "Completed" ? true : false}>X</Button>
               </li>
             );
           })}
@@ -116,23 +123,27 @@ export const TodoListItem = ({ todoList, changeStatus }: Props) => {
           <Button
             onClick={() => changeFilter("all")}
             classes={filter === "all" ? styles.buttonActive : ""}
+            disabled={todoList.status === "Completed" ? true : false}
           >
             All
           </Button>
           <Button
             onClick={() => changeFilter("active")}
             classes={filter === "active" ? styles.buttonActive : ""}
+            disabled={todoList.status === "Completed" ? true : false}
           >
             Active
           </Button>
           <Button
             onClick={() => changeFilter("completed")}
             classes={filter === "completed" ? styles.buttonActive : ""}
+            disabled={todoList.status === "Completed" ? true : false}
           >
             Completed
           </Button>
         </div>
       </div>
-    </div>
+      {todoList.status === "Completed" && <Button classes={styles.completedTodoButton} onClick={deleteTodoHandler}>Delete todo</Button>}
+    </div >
   );
 };
