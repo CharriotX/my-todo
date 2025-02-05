@@ -2,7 +2,7 @@ import { ChangeEvent } from "react"
 
 type Props = {
     children?: React.ReactNode
-    type: string
+    type: "text" | "number" | "checkbox"
     placeholder?: string
     value: string
     name?: string

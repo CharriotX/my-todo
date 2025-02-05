@@ -22,7 +22,7 @@ export const CreateTodoForm = ({ createTask }: Props) => {
     setTaskList(taskList.map(item => item.id === name ? { ...item, text: value } : item))
   }
 
-  const createTaskHandler = () => {
+  const createTodoHandler = () => {
     if (title.trim() === "") {
       setErrorText("Empty title. Try more")
       return
@@ -33,7 +33,7 @@ export const CreateTodoForm = ({ createTask }: Props) => {
 
     const filteredTasks = taskList.filter(item => item.text !== "")
 
-    const newTask: TodoType = { id: v1(), status: "Todo", title: title, todoTasks: filteredTasks }
+    const newTask: TodoType = { id: v1(), status: "Todo", filter: "all", title: title, todoTasks: filteredTasks }
     console.log(newTask);
 
     createTask(newTask)
@@ -47,7 +47,7 @@ export const CreateTodoForm = ({ createTask }: Props) => {
     setTitle(value)
   }
 
-  const addTaskHandler = () => {
+  const createTaskHandler = () => {
     setTaskList([...taskList, { id: v1(), text: "", isDone: false }])
   }
 
@@ -73,18 +73,18 @@ export const CreateTodoForm = ({ createTask }: Props) => {
               <li className={styles.taskItem} key={value.id}>
                 <Input placeholder="Task..." value={value.text} type="text" name={value.id} onChange={onChangeHandler}></Input>
                 <span>
-                  <Button onClick={() => deleteTaskInputHandler(value.id)}>X</Button>
+                  <Button styleType="active" onClick={() => deleteTaskInputHandler(value.id)}>X</Button>
                 </span>
               </li>
             )
           })}
-          <div>
-            <Button onClick={addTaskHandler}>More tasks</Button>
+          <div className={styles.moreTaskButton}>
+            <Button styleType="active" onClick={createTaskHandler}>More tasks</Button>
           </div>
         </ul>
       </div>
       <div className={styles.createButton}>
-        <Button onClick={createTaskHandler}>Create task</Button>
+        <Button styleType="active" onClick={createTodoHandler}>Create task</Button>
       </div>
     </div>
   );

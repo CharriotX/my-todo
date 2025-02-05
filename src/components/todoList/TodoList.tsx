@@ -1,16 +1,18 @@
 import styles from "./TodoList.module.css";
 import { TodoListItem } from "../todoListItem/TodoListItem";
-import { TodoType } from "../todoAreas/TodoAreas";
-import { TodoStatusType } from "../todoArea/TodoArea";
+import { FilterTasksType, TodoStatusType, TodoType } from "../todoAreas/TodoAreas";
 
-export type FilterValueType = "all" | "active" | "completed";
 type Props = {
   todoLists: TodoType[];
-  changeStatus: (status: TodoStatusType, todoId: string) => void;
+  changeStatus: (payload: { status: TodoStatusType, todoId: string }) => void;
+  changeTaskFilter: (payload: { todoId: string, filter: FilterTasksType }) => void
+  createTask: (payload: { todoId: string, text: string }) => void
+  deleteTask: (payload: { todoId: string, taskId: string }) => void
   deleteTodo: (todoId: string) => void
+  selectTaskItem: (payload: { todoId: string, taskId: string, checked: boolean }) => void
 };
 
-export const TodoList = ({ todoLists, changeStatus, deleteTodo }: Props) => {
+export const TodoList = ({ todoLists, changeStatus, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem }: Props) => {
   return (
     <div className={styles.todoList}>
       {todoLists.map((list) => {
@@ -20,6 +22,10 @@ export const TodoList = ({ todoLists, changeStatus, deleteTodo }: Props) => {
             todoList={list}
             changeStatus={changeStatus}
             deleteTodo={deleteTodo}
+            createTask={createTask}
+            deleteTask={deleteTask}
+            selectTaskItem={selectTaskItem}
+            changeTaskFilter={changeTaskFilter}
           ></TodoListItem>
         );
       })}

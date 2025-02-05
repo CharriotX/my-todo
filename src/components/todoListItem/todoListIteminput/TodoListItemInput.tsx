@@ -29,7 +29,7 @@ const TodoListItemInput = ({
         onKeyDown={createTaskOnEnterHandler}
         disabled={disabled}
       />
-      <Button onClick={createTaskHandler}>Add</Button>
+      <Button styleType="active" onClick={createTaskHandler}>Add</Button>
     </div>
   );
 };
