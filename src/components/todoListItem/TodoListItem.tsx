@@ -3,6 +3,7 @@ import { Button } from "../button/Button";
 import styles from "./TodoListItem.module.css";
 import { FilterTasksType, TodoStatusType, TodoTask, TodoType } from "../todoAreas/TodoAreas";
 import TodoListItemInput from "./todoListIteminput/TodoListItemInput";
+import { useSpring, animated } from "react-spring";
 
 type Props = {
   title?: string;
@@ -17,7 +18,13 @@ type Props = {
 
 export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem }: Props) => {
   const [taskInputTitle, setTaskInputTitle] = useState<string>("");
-
+  const [isCollapsed, setIsColapsed] = useState<boolean>(false)
+  const animation = useSpring({
+    maxHeight: isCollapsed ? 0 : 220,
+    opacity: isCollapsed ? 0 : 1,
+    overflow: 'hidden',
+    config: { tension: 300, friction: 30 },
+  });
   useEffect(() => {
     onStatusChange()
   }, [todoList.todoTasks])
@@ -65,6 +72,14 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
     }
   };
 
+  const onSelectItem = (taskId: string, e: ChangeEvent<HTMLInputElement>) => {
+    selectTaskItem({ todoId: todoList.id, taskId: taskId, checked: e.currentTarget.checked })
+  };
+
+  const toggleCollapsedTodo = () => {
+    setIsColapsed(!isCollapsed)
+  }
+
   let filteredTaskItems: TodoTask[] = todoList.todoTasks;
   if (todoList.filter === "active") {
     filteredTaskItems = todoList.todoTasks.filter((item) => !item.isDone);
@@ -73,64 +88,64 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
     filteredTaskItems = todoList.todoTasks.filter((item) => item.isDone);
   }
 
-  const onSelectItem = (taskId: string, e: ChangeEvent<HTMLInputElement>) => {
-    selectTaskItem({ todoId: todoList.id, taskId: taskId, checked: e.currentTarget.checked })
-  };
-
   return (
     <div className={todoList.status === "Completed" ? styles.todoListItem + " " + styles.completed : styles.todoListItem}>
       <h3 className={styles.itemTitle}>{todoList.title}</h3>
-      <TodoListItemInput
-        taskInputTitle={taskInputTitle}
-        createTaskHandler={createTaskHandler}
-        onChangeTaskInputTitle={onChangeTaskInputTitle}
-        createTaskOnEnterHandler={createTaskOnEnterHandler}
-        disabled={todoList.status === "Completed" ? true : false}
-      />
-      <div>
-        <ul className={styles.itemList}>
-          {filteredTaskItems.length === 0 && <div>No tasks</div>}
-          {filteredTaskItems.map((item) => {
-            const deleteTaskItemhandler = () => {
-              deleteTaskHandler(item.id);
-            };
-            return (
-              <li key={item.id}>
-                <input
-                  type="checkbox"
-                  checked={item.isDone}
-                  onChange={(e) => onSelectItem(item.id, e)}
-                ></input>
-                <span>{item.text}</span>
-                <Button onClick={deleteTaskItemhandler} styleType="default" disabled={todoList.status === "Completed" ? true : false}>X</Button>
-              </li>
-            );
-          })}
-        </ul>
-        <div className={styles.filterButtons}>
-          <Button
-            onClick={() => changeFilterHandler("all")}
-            styleType={todoList.filter === "all" ? "active" : "default"}
-            disabled={todoList.status === "Completed" ? true : false}
-          >
-            All
-          </Button>
-          <Button
-            onClick={() => changeFilterHandler("active")}
-            styleType={todoList.filter === "active" ? "active" : "default"}
-            disabled={todoList.status === "Completed" ? true : false}
-          >
-            Active
-          </Button>
-          <Button
-            onClick={() => changeFilterHandler("completed")}
-            styleType={todoList.filter === "completed" ? "active" : "default"}
-            disabled={todoList.status === "Completed" ? true : false}
-          >
-            Completed
-          </Button>
-        </div>
+      <div className={styles.collpseButtonBlock}>
+        <Button onClick={toggleCollapsedTodo}>{isCollapsed ? ">" : "<"}</Button>
       </div>
+      {!isCollapsed && (
+        <animated.div style={animation}>
+          <TodoListItemInput
+            taskInputTitle={taskInputTitle}
+            createTaskHandler={createTaskHandler}
+            onChangeTaskInputTitle={onChangeTaskInputTitle}
+            createTaskOnEnterHandler={createTaskOnEnterHandler}
+            disabled={todoList.status === "Completed" ? true : false}
+          />
+          <div>
+            <ul className={styles.itemList}>
+              {filteredTaskItems.length === 0 && <div>No tasks</div>}
+              {filteredTaskItems.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <input
+                      type="checkbox"
+                      checked={item.isDone}
+                      onChange={(e) => onSelectItem(item.id, e)}
+                    ></input>
+                    <span>{item.text}</span>
+                    <Button onClick={() => deleteTaskHandler(item.id)} styleType="default" disabled={todoList.status === "Completed" ? true : false}>X</Button>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className={styles.filterButtons}>
+              <Button
+                onClick={() => changeFilterHandler("all")}
+                styleType={todoList.filter === "all" ? "active" : "default"}
+                disabled={todoList.status === "Completed" ? true : false}
+              >
+                All
+              </Button>
+              <Button
+                onClick={() => changeFilterHandler("active")}
+                styleType={todoList.filter === "active" ? "active" : "default"}
+                disabled={todoList.status === "Completed" ? true : false}
+              >
+                Active
+              </Button>
+              <Button
+                onClick={() => changeFilterHandler("completed")}
+                styleType={todoList.filter === "completed" ? "active" : "default"}
+                disabled={todoList.status === "Completed" ? true : false}
+              >
+                Completed
+              </Button>
+            </div>
+          </div>
+        </animated.div>
+      )}
       {todoList.status === "Completed" && <Button styleType='disabled' onClick={deleteTodoHandler}>Complete todo</Button>}
     </div >
   );
