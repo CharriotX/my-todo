@@ -33,6 +33,10 @@
         }
     }
 
+    .noTasks {
+        margin: 20px 0;
+    }
+
     .collpseButtonBlock {
         position: absolute;
         top: 3px;

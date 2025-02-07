@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Button } from "../button/Button";
 import styles from "./TodoListItem.module.css";
 import { FilterTasksType, TodoStatusType, TodoTask, TodoType } from "../todoAreas/TodoAreas";
-import TodoListItemInput from "./todoListIteminput/TodoListItemInput";
+import CreateTodoItemForm from "../createTodoItemForm/CreateTodoItemForm";
 import { useSpring, animated } from "react-spring";
 
 type Props = {
@@ -17,10 +17,9 @@ type Props = {
 };
 
 export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem }: Props) => {
-  const [taskInputTitle, setTaskInputTitle] = useState<string>("");
   const [isCollapsed, setIsColapsed] = useState<boolean>(false)
   const animation = useSpring({
-    maxHeight: isCollapsed ? 0 : 220,
+    maxHeight: isCollapsed ? 0 : 700,
     opacity: isCollapsed ? 0 : 1,
     overflow: 'hidden',
     config: { tension: 300, friction: 30 },
@@ -29,18 +28,10 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
     onStatusChange()
   }, [todoList.todoTasks])
 
-  const createTaskHandler = () => {
-    createTask({ todoId: todoList.id, text: taskInputTitle })
-    setTaskInputTitle("");
+  const createTaskHandler = (inputText: string) => {
+    createTask({ todoId: todoList.id, text: inputText })
   };
-  const createTaskOnEnterHandler = (
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (e.key === "Enter") {
-      createTask({ todoId: todoList.id, text: taskInputTitle })
-      setTaskInputTitle(" ");
-    }
-  };
+
   const deleteTaskHandler = (taskId: string) => {
     deleteTask({ todoId: todoList.id, taskId })
   };
@@ -52,10 +43,6 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
   const deleteTodoHandler = () => {
     deleteTodo(todoList.id)
   }
-
-  const onChangeTaskInputTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    setTaskInputTitle(e.target.value);
-  };
 
   const onStatusChange = () => {
     if (todoList.todoTasks.length === 0) {
@@ -96,16 +83,13 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
       </div>
       {!isCollapsed && (
         <animated.div style={animation}>
-          <TodoListItemInput
-            taskInputTitle={taskInputTitle}
-            createTaskHandler={createTaskHandler}
-            onChangeTaskInputTitle={onChangeTaskInputTitle}
-            createTaskOnEnterHandler={createTaskOnEnterHandler}
+          <CreateTodoItemForm
+            addItem={createTaskHandler}
             disabled={todoList.status === "Completed" ? true : false}
           />
           <div>
             <ul className={styles.itemList}>
-              {filteredTaskItems.length === 0 && <div>No tasks</div>}
+              {filteredTaskItems.length === 0 && <div className={styles.noTasks}>No tasks</div>}
               {filteredTaskItems.map((item) => {
                 return (
                   <li key={item.id}>

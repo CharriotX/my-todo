@@ -34,7 +34,6 @@ export const CreateTodoForm = ({ createTask }: Props) => {
     const filteredTasks = taskList.filter(item => item.text !== "")
 
     const newTask: TodoType = { id: v1(), status: "Todo", filter: "all", title: title, todoTasks: filteredTasks }
-    console.log(newTask);
 
     createTask(newTask)
     setErrorText("")
@@ -43,11 +42,10 @@ export const CreateTodoForm = ({ createTask }: Props) => {
   }
 
   const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setTitle(value)
+    setTitle(e.currentTarget.value)
   }
 
-  const createTaskHandler = () => {
+  const createTaskInputHandler = () => {
     setTaskList([...taskList, { id: v1(), text: "", isDone: false }])
   }
 
@@ -79,7 +77,7 @@ export const CreateTodoForm = ({ createTask }: Props) => {
             )
           })}
           <div className={styles.moreTaskButton}>
-            <Button styleType="active" onClick={createTaskHandler}>More tasks</Button>
+            <Button styleType="active" onClick={createTaskInputHandler}>More tasks</Button>
           </div>
         </ul>
       </div>
