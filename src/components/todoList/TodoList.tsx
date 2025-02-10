@@ -10,9 +10,10 @@ type Props = {
   deleteTask: (payload: { todoId: string, taskId: string }) => void
   deleteTodo: (todoId: string) => void
   selectTaskItem: (payload: { todoId: string, taskId: string, checked: boolean }) => void
+  updateTodoTitle: (payload: { newTitle: string, todoId: string }) => void
 };
 
-export const TodoList = ({ todoLists, changeStatus, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem }: Props) => {
+export const TodoList = ({ todoLists, changeStatus, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem, updateTodoTitle }: Props) => {
   return (
     <div className={styles.todoList}>
       {todoLists.map((list) => {
@@ -26,6 +27,7 @@ export const TodoList = ({ todoLists, changeStatus, deleteTodo, changeTaskFilter
             deleteTask={deleteTask}
             selectTaskItem={selectTaskItem}
             changeTaskFilter={changeTaskFilter}
+            updateTodoTitle={updateTodoTitle}
           ></TodoListItem>
         );
       })}

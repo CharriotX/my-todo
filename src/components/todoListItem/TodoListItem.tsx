@@ -4,6 +4,7 @@ import styles from "./TodoListItem.module.css";
 import { FilterTasksType, TodoStatusType, TodoTask, TodoType } from "../todoAreas/TodoAreas";
 import CreateTodoItemForm from "../createTodoItemForm/CreateTodoItemForm";
 import { useSpring, animated } from "react-spring";
+import { EditableInput } from "../button/EditableInput/EditableInput";
 
 type Props = {
   title?: string;
@@ -14,9 +15,10 @@ type Props = {
   createTask: (payload: { todoId: string, text: string }) => void
   deleteTask: (payload: { todoId: string, taskId: string }) => void
   selectTaskItem: (payload: { todoId: string, taskId: string, checked: boolean }) => void
+  updateTodoTitle: (payload: { newTitle: string, todoId: string }) => void
 };
 
-export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem }: Props) => {
+export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem, updateTodoTitle }: Props) => {
   const [isCollapsed, setIsColapsed] = useState<boolean>(false)
   const animation = useSpring({
     maxHeight: isCollapsed ? 0 : 700,
@@ -42,6 +44,9 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
 
   const deleteTodoHandler = () => {
     deleteTodo(todoList.id)
+  }
+  const updateTodoTitleHandler = (newTitle: string) => {
+    updateTodoTitle({ newTitle, todoId: todoList.id })
   }
 
   const onStatusChange = () => {
@@ -77,7 +82,8 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
 
   return (
     <div className={todoList.status === "Completed" ? styles.todoListItem + " " + styles.completed : styles.todoListItem}>
-      <h3 className={styles.itemTitle}>{todoList.title}</h3>
+      {/* <h3 className={styles.itemTitle}>{todoList.title}</h3> */}
+      <EditableInput text={todoList.title} updateItem={updateTodoTitleHandler}></EditableInput>
       <div className={styles.collpseButtonBlock}>
         <Button onClick={toggleCollapsedTodo}>{isCollapsed ? ">" : "<"}</Button>
       </div>
@@ -85,7 +91,8 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
         <animated.div style={animation}>
           <CreateTodoItemForm
             addItem={createTaskHandler}
-            disabled={todoList.status === "Completed" ? true : false}
+            disabled={todoList.status === "Completed" || todoList.todoTasks.length >= 6 ? true : false}
+            placeholder={todoList.todoTasks.length >= 6 ? "Maximum number of tasks" : "New task title..."}
           />
           <div>
             <ul className={styles.itemList}>

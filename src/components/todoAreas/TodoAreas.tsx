@@ -70,6 +70,11 @@ export const TodoAreas = () => {
   const deleteTodo = (todoId: string) => {
     setTodos(prev => prev.filter(item => item.id !== todoId))
   }
+  const updateTodoTitle = (payload: { newTitle: string, todoId: string }) => {
+    const { newTitle, todoId } = payload
+    setTodos(prev => prev.map(item => item.id === todoId ? { ...item, title: newTitle } : item))
+  }
+  console.log(todos)
   const changeStatus = (payload: { status: TodoStatusType, todoId: string }) => {
     const { status, todoId } = payload
     setTodos(prev => prev.map(todo => todo.id === todoId ? { ...todo, status } : todo))
@@ -109,6 +114,7 @@ export const TodoAreas = () => {
         changeStatus={changeStatus}
         themeBg={area.areaBackground}
         deleteTodo={deleteTodo}
+        updateTodoTitle={updateTodoTitle}
         changeTaskFilter={changeTaskFilter}
         selectTaskItem={selectTaskItem}
       ></TodoArea >

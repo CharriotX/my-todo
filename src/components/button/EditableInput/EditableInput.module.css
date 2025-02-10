@@ -1,0 +1,9 @@
+.editableBlock {
+    margin: 5px;
+    padding: 2px 20px;
+    cursor: pointer;
+
+    input {
+        width: 80%;
+    }
+}

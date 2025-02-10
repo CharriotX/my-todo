@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react"
+import { ChangeEvent, FocusEventHandler } from "react"
 
 type Props = {
     children?: React.ReactNode
@@ -9,9 +9,11 @@ type Props = {
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
     disabled?: boolean
+    onBlur?: FocusEventHandler<HTMLInputElement>
+    autoFocus?: boolean
 }
 
-export const Input = ({ children, type, placeholder, value, name, onChange, onKeyDown, disabled }: Props) => {
+export const Input = ({ children, type, placeholder, value, name, onChange, onKeyDown, disabled, onBlur, autoFocus }: Props) => {
     return (
         <input
             name={name}
@@ -21,6 +23,8 @@ export const Input = ({ children, type, placeholder, value, name, onChange, onKe
             onChange={onChange}
             onKeyDown={onKeyDown}
             disabled={disabled}
+            onBlur={onBlur}
+            autoFocus={autoFocus}
         >
             {children}
         </input>

@@ -12,14 +12,18 @@ type Props = {
     deleteTask: (payload: { todoId: string, taskId: string }) => void
     selectTaskItem: (payload: { todoId: string, taskId: string, checked: boolean }) => void
     deleteTodo: (todoId: string) => void
+    updateTodoTitle: (payload: { newTitle: string, todoId: string }) => void
 }
 
-export const TodoArea = ({ title, todoLists, changeStatus, themeBg, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem }: Props) => {
+export const TodoArea = ({
+    title, todoLists, changeStatus, themeBg, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem, updateTodoTitle
+}: Props) => {
     return (
         <div className={styles.todoArea} style={{ background: `${themeBg}` }}>
             <h2>{title}</h2>
             <TodoList
                 todoLists={todoLists}
+                updateTodoTitle={updateTodoTitle}
                 changeStatus={changeStatus}
                 deleteTodo={deleteTodo}
                 changeTaskFilter={changeTaskFilter}

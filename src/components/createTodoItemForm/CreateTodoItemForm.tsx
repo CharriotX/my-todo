@@ -6,9 +6,10 @@ import styles from "./CreateTodoItemForm.module.css";
 type Props = {
   addItem: (inputText: string) => void
   disabled?: boolean
+  placeholder?: string
 };
 
-const CreateTodoItemForm = ({ addItem, disabled }: Props) => {
+const CreateTodoItemForm = ({ addItem, disabled, placeholder }: Props) => {
 
   const [inputText, setInputText] = useState<string>("")
   const [errorText, setErrorText] = useState<string>("")
@@ -44,7 +45,7 @@ const CreateTodoItemForm = ({ addItem, disabled }: Props) => {
     <div className={styles.inputBlock} >
       <Input
         type="text"
-        placeholder="New task title..."
+        placeholder={placeholder}
         value={inputText}
         onChange={onChange}
         onKeyDown={onPressEnter}
