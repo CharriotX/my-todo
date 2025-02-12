@@ -1,10 +1,14 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Button } from "../button/Button";
+import Button from '@mui/material/Button';
 import styles from "./TodoListItem.module.css";
 import { FilterTasksType, TodoStatusType, TodoTask, TodoType } from "../todoAreas/TodoAreas";
 import CreateTodoItemForm from "../createTodoItemForm/CreateTodoItemForm";
-import { useSpring, animated } from "react-spring";
-import { EditableInput } from "../button/EditableInput/EditableInput";
+import { EditableInput } from "../editableInput/EditableInput";
+import { Box, ButtonGroup, Checkbox, Collapse } from '@mui/material';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import { IconButton } from '@mui/material';
+import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
+import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 type Props = {
   title?: string;
@@ -20,12 +24,8 @@ type Props = {
 
 export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFilter, createTask, deleteTask, selectTaskItem, updateTodoTitle }: Props) => {
   const [isCollapsed, setIsColapsed] = useState<boolean>(false)
-  const animation = useSpring({
-    maxHeight: isCollapsed ? 0 : 700,
-    opacity: isCollapsed ? 0 : 1,
-    overflow: 'hidden',
-    config: { tension: 300, friction: 30 },
-  });
+  const [removeItemId, setRemoveItemId] = useState<string>("")
+
   useEffect(() => {
     onStatusChange()
   }, [todoList.todoTasks])
@@ -35,7 +35,12 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
   };
 
   const deleteTaskHandler = (taskId: string) => {
-    deleteTask({ todoId: todoList.id, taskId })
+    setRemoveItemId(taskId)
+    setTimeout(() => {
+      deleteTask({ todoId: todoList.id, taskId })
+      setRemoveItemId("")
+    }, 300)
+
   };
 
   const changeFilterHandler = (filter: FilterTasksType) => {
@@ -81,14 +86,17 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
   }
 
   return (
-    <div className={todoList.status === "Completed" ? styles.todoListItem + " " + styles.completed : styles.todoListItem}>
-      {/* <h3 className={styles.itemTitle}>{todoList.title}</h3> */}
+    <div className={styles.todoListItem}>
       <EditableInput text={todoList.title} updateItem={updateTodoTitleHandler}></EditableInput>
       <div className={styles.collpseButtonBlock}>
-        <Button onClick={toggleCollapsedTodo}>{isCollapsed ? ">" : "<"}</Button>
+        <IconButton onClick={toggleCollapsedTodo}>
+          {isCollapsed ? <ExpandMoreOutlinedIcon></ExpandMoreOutlinedIcon> : <ExpandLessOutlinedIcon></ExpandLessOutlinedIcon>}
+        </IconButton>
       </div>
-      {!isCollapsed && (
-        <animated.div style={animation}>
+
+      {/* {!isCollapsed && ( */}
+      <div>
+        <Collapse in={!isCollapsed} orientation='vertical'>
           <CreateTodoItemForm
             addItem={createTaskHandler}
             disabled={todoList.status === "Completed" || todoList.todoTasks.length >= 6 ? true : false}
@@ -99,45 +107,62 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
               {filteredTaskItems.length === 0 && <div className={styles.noTasks}>No tasks</div>}
               {filteredTaskItems.map((item) => {
                 return (
-                  <li key={item.id}>
-                    <input
-                      type="checkbox"
-                      checked={item.isDone}
-                      onChange={(e) => onSelectItem(item.id, e)}
-                    ></input>
-                    <span>{item.text}</span>
-                    <Button onClick={() => deleteTaskHandler(item.id)} styleType="default" disabled={todoList.status === "Completed" ? true : false}>X</Button>
-                  </li>
+                  <Collapse key={item.id} in={removeItemId !== item.id}>
+                    <li>
+                      <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                        <Checkbox
+                          checked={item.isDone}
+                          onChange={(e) => onSelectItem(item.id, e)}
+                          size={"small"}
+                        ></Checkbox>
+                        <div>{item.text}</div>
+                      </Box>
+                      <IconButton onClick={() => deleteTaskHandler(item.id)} disabled={todoList.status === 'Completed'}>
+                        <CancelPresentationIcon></CancelPresentationIcon>
+                      </IconButton>
+                    </li>
+                  </Collapse>
                 );
               })}
             </ul>
             <div className={styles.filterButtons}>
-              <Button
-                onClick={() => changeFilterHandler("all")}
-                styleType={todoList.filter === "all" ? "active" : "default"}
-                disabled={todoList.status === "Completed" ? true : false}
-              >
-                All
-              </Button>
-              <Button
-                onClick={() => changeFilterHandler("active")}
-                styleType={todoList.filter === "active" ? "active" : "default"}
-                disabled={todoList.status === "Completed" ? true : false}
-              >
-                Active
-              </Button>
-              <Button
-                onClick={() => changeFilterHandler("completed")}
-                styleType={todoList.filter === "completed" ? "active" : "default"}
-                disabled={todoList.status === "Completed" ? true : false}
-              >
-                Completed
-              </Button>
+              {todoList.status === 'Completed'
+                ? <Button onClick={deleteTodoHandler} color={'success'} variant='contained'>Complete todo</Button>
+                : <ButtonGroup sx={{ fontWeight: 'bold' }}>
+                  <Button
+                    onClick={() => changeFilterHandler("all")}
+                    color={todoList.filter === "all" ? "primary" : "secondary"}
+                    sx={{ fontSize: 10, fontWeight: 'bold' }}
+                    variant={todoList.filter === "all" ? 'contained' : 'outlined'}
+                  >
+                    All
+                  </Button>
+                  <Button
+                    onClick={() => changeFilterHandler("active")}
+                    color={todoList.filter === "active" ? "primary" : "secondary"}
+                    size={'small'}
+                    sx={{ fontSize: 10, fontWeight: 'bold' }}
+                    variant={todoList.filter === "active" ? 'contained' : 'outlined'}
+                  >
+                    Active
+                  </Button>
+                  <Button
+                    onClick={() => changeFilterHandler("completed")}
+                    color={todoList.filter === "completed" ? 'primary' : 'secondary'}
+                    size={'small'}
+                    variant={todoList.filter === "completed" ? 'contained' : 'outlined'}
+                    sx={{ fontSize: 10, fontWeight: 'bold' }}
+                  >
+                    Completed
+                  </Button>
+                </ButtonGroup>
+              }
             </div>
           </div>
-        </animated.div>
-      )}
-      {todoList.status === "Completed" && <Button styleType='disabled' onClick={deleteTodoHandler}>Complete todo</Button>}
+        </Collapse>
+      </div>
+      {/* )
+      } */}
     </div >
   );
 };

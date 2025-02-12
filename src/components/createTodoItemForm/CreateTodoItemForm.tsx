@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
-import { Button } from "../button/Button";
-import { Input } from "../input/Input";
+import Button from '@mui/material/Button';
 import styles from "./CreateTodoItemForm.module.css";
+import { TextField } from "@mui/material";
 
 type Props = {
   addItem: (inputText: string) => void
@@ -43,16 +43,19 @@ const CreateTodoItemForm = ({ addItem, disabled, placeholder }: Props) => {
 
   return (
     <div className={styles.inputBlock} >
-      <Input
+      <TextField
+        size={'small'}
         type="text"
         placeholder={placeholder}
         value={inputText}
         onChange={onChange}
         onKeyDown={onPressEnter}
         disabled={disabled}
+        label={'Task title'}
+        error={errorText.length !== 0}
+        helperText={errorText}
       />
-      <span className={styles.errorText}>{errorText}</span>
-      <Button styleType="active" onClick={onCreateHandler}>Add</Button>
+      <Button onClick={onCreateHandler} disabled={disabled} variant='contained' size={'small'}>Add</Button>
     </div >
   );
 };

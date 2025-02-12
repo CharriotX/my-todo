@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
-import { Input } from "../../input/Input";
 import { TodoTask, TodoType } from "../TodoAreas";
-import { Button } from "../../button/Button";
 import styles from "./CreateTodoForm.module.css"
 import { v1 } from "uuid";
+import { Box, Button, IconButton, List, ListItem, TextField } from "@mui/material";
+import ClearIcon from '@mui/icons-material/Clear';
 
 type Props = {
   createTask: (task: TodoType) => void
@@ -43,10 +43,16 @@ export const CreateTodoForm = ({ createTask }: Props) => {
 
   const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value)
+    setErrorText("")
   }
 
   const createTaskInputHandler = () => {
-    setTaskList([...taskList, { id: v1(), text: "", isDone: false }])
+    if (taskList.length >= 6) {
+      return
+    } else {
+      setTaskList([...taskList, { id: v1(), text: "", isDone: false }])
+    }
+
   }
 
   const deleteTaskInputHandler = (taskId: string) => {
@@ -56,33 +62,34 @@ export const CreateTodoForm = ({ createTask }: Props) => {
 
   return (
     <div className={styles.form}>
-      <div className={styles.titleBlock}>
-        <div className={styles.formLabel}>Enter title</div>
-        <Input type="text" value={title} onChange={onChangeTitle} placeholder="Title..."></Input>
-      </div>
-      {errorText !== "" && <div className={styles.errorText}>{errorText}</div>}
-      <div className={styles.taskBlock}>
-        <div className={styles.formLabel}>
+      <Box display={"flex"} justifyContent={'center'} flexDirection={"column"} alignItems={"center"} gap={2}>
+        <h3>Enter title</h3>
+        <TextField label={"Title"} type="text" value={title} onChange={onChangeTitle} placeholder="Title..." error={errorText !== ''} helperText={errorText}></TextField>
+      </Box>
+      <Box marginTop={"20px"} display={"flex"} justifyContent={'center'} flexDirection={"column"} alignItems={"center"} >
+        <Box display={"flex"} justifyContent={'center'} flexDirection={"column"} alignItems={"center"} gap={2} fontWeight="500">
           Task items
-        </div>
-        <ul className={styles.taskList}>
+        </Box>
+        <List>
           {taskList.map(value => {
             return (
-              <li className={styles.taskItem} key={value.id}>
-                <Input placeholder="Task..." value={value.text} type="text" name={value.id} onChange={onChangeHandler}></Input>
-                <span>
-                  <Button styleType="active" onClick={() => deleteTaskInputHandler(value.id)}>X</Button>
-                </span>
-              </li>
+              <ListItem key={value.id} >
+                <Box marginRight={"20px"}>
+                  <TextField size="small" label="Task" variant={"outlined"} placeholder="Task..." value={value.text} type="text" name={value.id} onChange={onChangeHandler}></TextField>
+                </Box>
+                <IconButton onClick={() => deleteTaskInputHandler(value.id)} >
+                  <ClearIcon></ClearIcon>
+                </IconButton>
+              </ListItem>
             )
           })}
-          <div className={styles.moreTaskButton}>
-            <Button styleType="active" onClick={createTaskInputHandler}>More tasks</Button>
-          </div>
-        </ul>
-      </div>
+          <Box textAlign={"center"}>
+            <Button size={"small"} variant="contained" color="primary" onClick={createTaskInputHandler} disabled={taskList.length >= 6}>More tasks</Button>
+          </Box>
+        </List>
+      </Box>
       <div className={styles.createButton}>
-        <Button styleType="active" onClick={createTodoHandler}>Create task</Button>
+        <Button variant="contained" color="primary" onClick={createTodoHandler}>Create task</Button>
       </div>
     </div>
   );

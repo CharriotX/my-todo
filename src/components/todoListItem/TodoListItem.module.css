@@ -1,9 +1,9 @@
 .todoListItem {
     max-width: 100%;
-    width: 200px;
+    width: 220px;
     height: fit-content;
     border: 1px solid grey;
-    border-radius: 10px;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,16 +16,19 @@
     }
 
     .filterButtons button {
-        margin: 5px 3px;
+        margin: 0
     }
 
     .itemList {
-        li {
-            margin: 10px;
+        width: 200px;
+        min-height: 110px;
+        margin: 5px 0;
 
-            span {
-                margin-left: 10px;
-            }
+        li {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 14px;
 
             button {
                 margin-left: 5px;
@@ -34,26 +37,16 @@
     }
 
     .noTasks {
-        margin: 20px 0;
+        margin: 10px 0 0;
     }
 
     .collpseButtonBlock {
         position: absolute;
         top: 3px;
         right: 3px;
-        border: 1px solid grey;
-        border-radius: 50px;
         display: flex;
         justify-content: center;
         align-items: center;
-        transform: rotate(90deg);
-
-        button {
-            border: 0;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-        }
     }
 }
 

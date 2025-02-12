@@ -4,12 +4,6 @@
     align-items: center;
     gap: 10px;
 
-    input {
-        border-radius: 10px;
-        padding: 5px;
-        border: 1px solid grey;
-    }
-
     .errorText {
         font-size: 14px;
         color: crimson;

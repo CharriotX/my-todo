@@ -4,8 +4,9 @@ import styles from "./TodoAreas.module.css";
 import { theme } from "../../styles/Theme";
 import { Modal } from "../modal/Modal";
 import { CreateTodoForm } from "./createTodoForm/CreateTodoForm";
-import { Button } from "../button/Button";
 import { v1 } from "uuid";
+import { Button } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 
 export type FilterTasksType = "all" | "active" | "completed";
 export type TodoStatusType = "Todo" | "In Progress" | "Completed";
@@ -74,7 +75,6 @@ export const TodoAreas = () => {
     const { newTitle, todoId } = payload
     setTodos(prev => prev.map(item => item.id === todoId ? { ...item, title: newTitle } : item))
   }
-  console.log(todos)
   const changeStatus = (payload: { status: TodoStatusType, todoId: string }) => {
     const { status, todoId } = payload
     setTodos(prev => prev.map(todo => todo.id === todoId ? { ...todo, status } : todo))
@@ -125,7 +125,9 @@ export const TodoAreas = () => {
     <div className={styles.todoAreas} >
       {todoAreas}
       <div className={styles.addTaskButton}>
-        <Button classes={styles.addButton} onClick={() => setIsOpenModal(true)}>+</Button>
+        <Button onClick={() => setIsOpenModal(true)} variant='contained' sx={{ padding: '15px 0', backgroundColor: "#80d8ff" }}>
+          <AddIcon></AddIcon>
+        </Button>
         <Modal active={isOpenModal} setActive={setIsOpenModal}>
           <CreateTodoForm createTask={createTodo}></CreateTodoForm>
         </Modal>

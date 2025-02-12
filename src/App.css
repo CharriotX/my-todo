@@ -33,3 +33,7 @@
         background-color: unset;
         border: none;
     }
+
+    ::-webkit-scrollbar {
+        width: 0;
+    }
