@@ -9,6 +9,8 @@ import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import { IconButton } from '@mui/material';
 import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
+import { buttonSx } from "./TodoListItem.styles";
+import { theme } from "../../styles/Theme";
 
 type Props = {
   title?: string;
@@ -127,12 +129,12 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
             </ul>
             <div className={styles.filterButtons}>
               {todoList.status === 'Completed'
-                ? <Button onClick={deleteTodoHandler} color={'success'} variant='contained'>Complete todo</Button>
+                ? <Button onClick={deleteTodoHandler} variant='contained'>Complete todo</Button>
                 : <ButtonGroup sx={{ fontWeight: 'bold' }}>
                   <Button
                     onClick={() => changeFilterHandler("all")}
                     color={todoList.filter === "all" ? "primary" : "secondary"}
-                    sx={{ fontSize: 10, fontWeight: 'bold' }}
+                    sx={buttonSx}
                     variant={todoList.filter === "all" ? 'contained' : 'outlined'}
                   >
                     All
@@ -141,7 +143,7 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
                     onClick={() => changeFilterHandler("active")}
                     color={todoList.filter === "active" ? "primary" : "secondary"}
                     size={'small'}
-                    sx={{ fontSize: 10, fontWeight: 'bold' }}
+                    sx={buttonSx}
                     variant={todoList.filter === "active" ? 'contained' : 'outlined'}
                   >
                     Active
@@ -151,7 +153,7 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
                     color={todoList.filter === "completed" ? 'primary' : 'secondary'}
                     size={'small'}
                     variant={todoList.filter === "completed" ? 'contained' : 'outlined'}
-                    sx={{ fontSize: 10, fontWeight: 'bold' }}
+                    sx={buttonSx}
                   >
                     Completed
                   </Button>

@@ -125,7 +125,7 @@ export const TodoAreas = () => {
     <div className={styles.todoAreas} >
       {todoAreas}
       <div className={styles.addTaskButton}>
-        <Button onClick={() => setIsOpenModal(true)} variant='contained' sx={{ padding: '15px 0', backgroundColor: "#80d8ff" }}>
+        <Button onClick={() => setIsOpenModal(true)} variant='contained' sx={{ padding: '15px 0' }}>
           <AddIcon></AddIcon>
         </Button>
         <Modal active={isOpenModal} setActive={setIsOpenModal}>
