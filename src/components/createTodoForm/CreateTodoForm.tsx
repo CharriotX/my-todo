@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
-import { TodoTask, TodoType } from "../TodoAreas";
 import styles from "./CreateTodoForm.module.css"
 import { v1 } from "uuid";
 import { Box, Button, IconButton, List, ListItem, TextField } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
+import { TodoTaskType, TodoType } from "../todoList/TodoList";
 
 type Props = {
   createTask: (task: TodoType) => void
@@ -11,7 +11,7 @@ type Props = {
 
 export const CreateTodoForm = ({ createTask }: Props) => {
   const [title, setTitle] = useState<string>("");
-  const [taskList, setTaskList] = useState<Array<TodoTask>>([]);
+  const [taskList, setTaskList] = useState<Array<TodoTaskType>>([]);
   const [errorText, setErrorText] = useState<string>("")
 
   const minTitleLenght = 5
@@ -89,7 +89,7 @@ export const CreateTodoForm = ({ createTask }: Props) => {
         </List>
       </Box>
       <div className={styles.createButton}>
-        <Button variant="contained" color="primary" onClick={createTodoHandler}>Create task</Button>
+        <Button variant="contained" color="primary" onClick={createTodoHandler}>Create todo</Button>
       </div>
     </div>
   );

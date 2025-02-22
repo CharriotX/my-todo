@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react'
 import { Input } from '../input/Input'
-import styles from "./EditableInput.module.css"
+import { Box } from '@mui/system'
+import { editableInputBoxSx } from './EditableInput.style'
 
 
 type Props = {
@@ -26,11 +27,11 @@ export const EditableInput = ({ text, updateItem }: Props) => {
     }
 
     return (
-        <div className={styles.editableBlock} title="Click for edit">
+        <Box title="Click for edit" sx={editableInputBoxSx} >
             {!isEdit
                 ? <div onClick={onTextClickHandler}>{text}</div>
                 : <Input value={inputText} onChange={onChangeHandler} type="text" onBlur={editOnBlurHandler} autoFocus={true} />
             }
-        </div>
+        </Box>
     )
 }
