@@ -1,7 +1,7 @@
 import "./App.css";
-import { Header } from "./components/header/Header";
+import { Header } from "../components/header/Header";
 import { alpha, createTheme, ThemeProvider } from '@mui/material/styles'
-import { TodoList } from "./components/todoList/TodoList";
+import { TodoList } from "../components/todoList/TodoList";
 
 function App() {
   const theme = createTheme({

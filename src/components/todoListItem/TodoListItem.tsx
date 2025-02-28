@@ -16,7 +16,7 @@ type Props = {
   changeStatus: (payload: { status: TodoStatusType, todoId: string }) => void;
   changeTaskFilter: (payload: { todoId: string, filter: FilterTaskType }) => void
   deleteTodo: (todoId: string) => void
-  createTask: (payload: { todoId: string, text: string }) => void
+  createTask: (payload: { todoId: string, taskTitle: string }) => void
   deleteTask: (payload: { todoId: string, taskId: string }) => void
   selectTaskItem: (payload: { todoId: string, taskId: string, checked: boolean }) => void
   updateTodoTitle: (payload: { newTitle: string, todoId: string }) => void
@@ -31,7 +31,7 @@ export const TodoListItem = ({ todoList, changeStatus, deleteTodo, changeTaskFil
   }, [todoList.todoTasks])
 
   const createTaskHandler = (inputText: string) => {
-    createTask({ todoId: todoList.id, text: inputText })
+    createTask({ todoId: todoList.id, taskTitle: inputText })
   };
 
   const deleteTaskHandler = (taskId: string) => {

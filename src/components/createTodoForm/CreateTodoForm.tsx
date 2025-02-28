@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import styles from "./CreateTodoForm.module.css"
-import { v1 } from "uuid";
 import { Box, Button, IconButton, List, ListItem, TextField } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import { TodoTaskType, TodoType } from "../todoList/TodoList";
+import { nanoid } from "@reduxjs/toolkit";
 
 type Props = {
   createTask: (task: TodoType) => void
@@ -33,7 +33,7 @@ export const CreateTodoForm = ({ createTask }: Props) => {
 
     const filteredTasks = taskList.filter(item => item.text !== "")
 
-    const newTask: TodoType = { id: v1(), status: "Todo", filter: "all", title: title, todoTasks: filteredTasks }
+    const newTask: TodoType = { id: nanoid(), status: "Todo", filter: "all", title: title, todoTasks: filteredTasks }
 
     createTask(newTask)
     setErrorText("")
@@ -50,7 +50,7 @@ export const CreateTodoForm = ({ createTask }: Props) => {
     if (taskList.length >= 6) {
       return
     } else {
-      setTaskList([...taskList, { id: v1(), text: "", isDone: false }])
+      setTaskList([...taskList, { id: nanoid(), text: "", isDone: false }])
     }
 
   }
