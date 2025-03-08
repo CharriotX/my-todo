@@ -1,7 +1,8 @@
 import "./App.css";
-import { Header } from "../components/header/Header";
+import { Header } from "../common/components/header/Header";
 import { alpha, createTheme, ThemeProvider } from '@mui/material/styles'
-import { TodoList } from "../components/todoList/TodoList";
+import "@/common/theme/Global.css"
+import { Todolists } from "@/features/todolists/ui/Todolists/Todolists";
 
 function App() {
   const theme = createTheme({
@@ -11,10 +12,11 @@ function App() {
       }
     },
   })
+
   return (
     <ThemeProvider theme={theme}>
       <Header></Header>
-      <TodoList></TodoList>
+      <Todolists></Todolists>
     </ThemeProvider>
   );
 }

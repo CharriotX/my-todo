@@ -1,0 +1,17 @@
+.inputBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    .errorBox {
+        height: 20px;
+        font-size: 14px;
+        color: crimson;
+    }
+
+    .errorText {
+        font-size: 14px;
+        color: crimson;
+    }
+}

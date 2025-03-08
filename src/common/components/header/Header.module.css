@@ -1,0 +1,13 @@
+.header {
+    background-color: var(--header-background);
+    height: 60px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    padding: 0 30px;
+}
+
+.navigation {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
