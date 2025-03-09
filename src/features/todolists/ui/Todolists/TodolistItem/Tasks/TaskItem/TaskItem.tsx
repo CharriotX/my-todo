@@ -5,6 +5,7 @@ import { ChangeEvent } from "react"
 import { Button } from "@/common/components/button/Button"
 import { EditableInput } from "@/common/components/editableInput/EditableInput"
 import styles from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.module.css"
+import DeleteIcon from "@/common/theme/DeleteIcon"
 
 type Props = {
     task: TodoTaskType
@@ -28,16 +29,18 @@ const TaskItem = ({ task, todolistId }: Props) => {
 
     return (
         <li className={styles.item}>
+            <input
+                type="checkbox"
+                checked={task.isDone}
+                onChange={(e) => selectTask(e)}
+            ></input>
             <div className={styles.itemText}>
-                <input
-                    type="checkbox"
-                    checked={task.isDone}
-                    onChange={(e) => selectTask(e)}
-                ></input>
                 <EditableInput text={task.text} updateItem={updateTaskTitle} />
             </div>
             <div className={styles.itemButton}>
-                <Button onClick={removeTask}>X</Button>
+                <Button buttonType="remove" onClick={removeTask}>
+                    <DeleteIcon></DeleteIcon>
+                </Button>
             </div>
         </li>
     )

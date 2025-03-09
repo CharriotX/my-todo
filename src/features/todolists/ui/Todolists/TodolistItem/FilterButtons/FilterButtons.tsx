@@ -2,6 +2,7 @@ import { Button } from '@/common/components/button/Button'
 import { FilterTaskType, TodolistType } from '../../Todolists'
 import { useAppDispatch } from '@/common/hooks/useAppDispatch'
 import { changeTasksFilterAC, deleteTodolistAC } from '@/features/todolists/model/todolists-reduser'
+import styles from "./FilterButtons.module.css"
 
 type Props = {
     todolist: TodolistType
@@ -19,10 +20,10 @@ const FilterButtons = ({ todolist }: Props) => {
     };
 
     return (
-        <div>
+        <div className={styles.box}>
             {todolist.status === 'Completed'
                 ? <Button onClick={deleteTodo} >Complete todo</Button>
-                : <div>
+                : <>
                     <Button
                         onClick={() => changeFilter("all")}
                         buttonType={todolist.filter === "all" ? "active" : "default"}
@@ -41,7 +42,7 @@ const FilterButtons = ({ todolist }: Props) => {
                     >
                         Completed
                     </Button>
-                </div>
+                </>
             }
         </div>
     )

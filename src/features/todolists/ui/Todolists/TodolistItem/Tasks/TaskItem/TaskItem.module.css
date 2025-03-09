@@ -1,0 +1,20 @@
+.item {
+    display: flex;
+
+    input[type="checkbox"] {
+        transform: scale(1.5);
+        margin: 5px;
+        z-index: 0;
+    }
+}
+
+.itemText {
+    flex-grow: 1;
+    padding: 0;
+}
+
+.itemButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

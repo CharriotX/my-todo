@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/common/hooks/useAppSelector";
 import { TodoListItem } from "./TodolistItem/TodoListItem";
-import styles from "@/features/todolists/ui/Todolists/TodoList.module.css"
+import styles from "@/features/todolists/ui/Todolists/Todolist.module.css"
 import { selectTodolists } from "@/features/todolists/model/todolists-selector";
 
 export type TodoStatusType = "Todo" | "In Progress" | "Completed"

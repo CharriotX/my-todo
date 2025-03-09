@@ -10,4 +10,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    h2 {
+        color: #0080FF;
+    }
+
+}
+
+.buttonsBlock button {
+    padding: 10px 20px;
 }

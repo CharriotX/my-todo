@@ -1,0 +1,48 @@
+.formBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .titleBlock {
+        text-align: center;
+
+        h4 {
+            margin-bottom: 10px;
+        }
+    }
+
+    .errorText {
+        font-size: 14px;
+        color: crimson;
+    }
+
+    .tasksBlock {
+        margin-top: 20px;
+        text-align: center;
+
+        h5 {
+            margin: 10px 0;
+        }
+
+        ul {
+            li {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 10px;
+            }
+        }
+
+        .createTaskButton {
+            margin-top: 10px;
+        }
+    }
+
+    .errorMessage {
+        height: 25px;
+        margin: 5px;
+        font-size: 14px;
+        color: crimson;
+    }
+
+}

@@ -53,7 +53,7 @@ const CreateTodoTaskForm = ({ addItem, disabled, placeholder }: Props) => {
       <div className={styles.errorBox}>
         {errorText && errorText}
       </div>
-      <Button onClick={onCreateHandler} disabled={disabled} buttonType="secondary">Add</Button>
+      <Button onClick={onCreateHandler} disabled={disabled}>Add</Button>
     </div >
   );
 };

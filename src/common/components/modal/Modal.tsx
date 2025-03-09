@@ -1,4 +1,5 @@
 import React from "react"
+import ReactDOM from 'react-dom';
 import styles from "./Modal.module.css"
 
 type Props = {
@@ -8,11 +9,12 @@ type Props = {
 }
 
 export const Modal = ({ isOpen, setIsOpen, children }: Props) => {
-    return (
+    return ReactDOM.createPortal(
         <div className={isOpen ? styles.modal + ` ` + styles.active : styles.modal} onClick={() => setIsOpen(false)}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 {children}
             </div>
-        </div>
+        </div>,
+        document.body
     )
 }

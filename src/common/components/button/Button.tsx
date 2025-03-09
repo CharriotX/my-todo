@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes } from "react"
 import styles from "./Button.module.css"
 
-type ButtonType = "default" | "secondary" | "red" | "active"
+type ButtonType = "default" | "secondary" | "remove" | "active"
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     buttonType?: ButtonType,
@@ -11,8 +11,8 @@ export const Button = ({ children, onClick, disabled, buttonType, ...rest }: But
 
     const finalClassName = styles.button + " "
         + (disabled === true
-            ? styles.disabled : buttonType === "red"
-                ? styles.red : buttonType === "secondary"
+            ? styles.disabled : buttonType === "remove"
+                ? styles.remove : buttonType === "secondary"
                     ? styles.secondary : buttonType === "active"
                         ? styles.active : styles.default)
 

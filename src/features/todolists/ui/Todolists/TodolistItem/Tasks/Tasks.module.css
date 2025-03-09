@@ -1,5 +1,12 @@
-.item {}
+.box {
+    margin: 5px 0;
 
-.itemText {}
+    li {
+        margin: 5px 0;
+    }
 
-.itemButton {}
+    .noTasksBlock {
+        text-align: center;
+        margin-top: 22px;
+    }
+}

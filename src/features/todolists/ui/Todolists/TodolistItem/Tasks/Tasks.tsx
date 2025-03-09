@@ -3,6 +3,7 @@ import { TodolistType, TodoTaskType } from "../../Todolists";
 import TaskItem from "./TaskItem/TaskItem";
 import { changeStatusTodolistAC } from "@/features/todolists/model/todolists-reduser";
 import { useEffect } from "react";
+import styles from "./Tasks.module.css"
 
 type Props = {
     todolist: TodolistType
@@ -40,8 +41,8 @@ const Tasks = ({ todolist }: Props) => {
     }
 
     return (
-        <ul>
-            {filteredTaskItems.length === 0 && <div>No tasks</div>}
+        <ul className={styles.box}>
+            {filteredTaskItems.length === 0 && <div className={styles.noTasksBlock}>No tasks</div>}
             {filteredTaskItems.map((item) => {
                 return (
                     <TaskItem task={item} todolistId={todolist.id} />
