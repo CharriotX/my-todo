@@ -1,55 +1,43 @@
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
-import { TodolistType, TodoTaskType } from "../../Todolists";
-import TaskItem from "./TaskItem/TaskItem";
-import { changeStatusTodolistAC } from "@/features/todolists/model/todolists-reduser";
+import styles from "./Tasks.module.css";
 import { useEffect } from "react";
-import styles from "./Tasks.module.css"
+import { useAppSelector } from "@/common/hooks/useAppSelector";
+import { fetchTasks, selectTasks } from "@/features/todolists/model/tasks-slice";
+import { DomainTodolist } from "@/features/todolists/model/todolists-slice";
+import TaskItem from "./TaskItem/TaskItem";
+import { TaskStatus } from "@/common/enums";
 
 type Props = {
-    todolist: TodolistType
-}
+  todolist: DomainTodolist;
+};
 
 const Tasks = ({ todolist }: Props) => {
-    const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const tasks = useAppSelector(selectTasks);
+  useEffect(() => {
+    dispatch(fetchTasks(todolist.id));
+  }, []);
 
-    useEffect(() => {
-        onStatusChange()
-    }, [todolist.status])
+  let filteredTaskItems = tasks[todolist.id];
+  if (todolist.filter === "active") {
+    filteredTaskItems = filteredTaskItems.filter((item) => item.status === TaskStatus.InProgress);
+  }
+  if (todolist.filter === "completed") {
+    filteredTaskItems = filteredTaskItems.filter((item) => item.status === TaskStatus.Completed);
+  }
 
+  return (
+    <ul className={styles.box}>
+      {filteredTaskItems && filteredTaskItems.length === 0 ? (
+        <div className={styles.noTasksBlock}>No tasks</div>
+      ) : (
+        filteredTaskItems &&
+        filteredTaskItems.map((item) => {
+          return <TaskItem task={item} todolistId={todolist.id} key={item.id} />;
+        })
+      )}
+    </ul>
+  );
+};
 
-    const onStatusChange = () => {
-        if (todolist.todoTasks.length === 0) {
-            return
-        }
-        if (todolist.todoTasks.every((task) => task.isDone === false)) {
-            dispatch(changeStatusTodolistAC({ status: "Todo", todoId: todolist.id }));
-        }
-        if (todolist.todoTasks.some((task) => task.isDone === true)) {
-            dispatch(changeStatusTodolistAC({ status: "In Progress", todoId: todolist.id }));
-        }
-        if (todolist.todoTasks.every((task) => task.isDone === true)) {
-            dispatch(changeStatusTodolistAC({ status: "Completed", todoId: todolist.id }));
-        }
-    };
-
-    let filteredTaskItems: TodoTaskType[] = todolist.todoTasks;
-    if (todolist.filter === "active") {
-        filteredTaskItems = todolist.todoTasks.filter((item) => !item.isDone);
-    }
-    if (todolist.filter === "completed") {
-        filteredTaskItems = todolist.todoTasks.filter((item) => item.isDone);
-    }
-
-    return (
-        <ul className={styles.box}>
-            {filteredTaskItems.length === 0 && <div className={styles.noTasksBlock}>No tasks</div>}
-            {filteredTaskItems.map((item) => {
-                return (
-                    <TaskItem task={item} todolistId={todolist.id} />
-                );
-            })}
-        </ul >
-    )
-}
-
-export default Tasks
+export default Tasks;

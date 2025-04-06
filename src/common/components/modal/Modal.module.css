@@ -23,4 +23,6 @@
     padding: 20px;
     border-radius: 15px;
     z-index: 99;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }

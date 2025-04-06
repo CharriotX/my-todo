@@ -1,25 +1,23 @@
 import { EditableInput } from "@/common/components/editableInput/EditableInput"
-import { TodolistType } from "../../Todolists"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch"
-import { deleteTodolistAC, updateTodolistTitleAC } from "@/features/todolists/model/todolists-reduser"
 import styles from "./TodolistTitle.module.css"
 import { Button } from "@/common/components/button/Button"
 import DeleteIcon from "@/common/theme/DeleteIcon"
+import { deleteTodolist, DomainTodolist, updateTodolistTitle } from "@/features/todolists/model/todolists-slice"
 
 type Props = {
-    todolist: TodolistType
+    todolist: DomainTodolist
 }
-
 
 export const TodolistTitle = ({ todolist }: Props) => {
     const dispatch = useAppDispatch()
 
     const updateTodoTitle = (newTitle: string) => {
-        dispatch(updateTodolistTitleAC({ newTitle, todoId: todolist.id }))
+        dispatch(updateTodolistTitle({todolistId: todolist.id, title: newTitle}))
     }
 
     const deleteTodo = () => {
-        dispatch(deleteTodolistAC({ todoId: todolist.id }))
+        dispatch(deleteTodolist(todolist.id))
     }
 
     return (

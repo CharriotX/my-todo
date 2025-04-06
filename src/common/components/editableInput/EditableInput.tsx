@@ -27,7 +27,7 @@ export const EditableInput = ({ text, updateItem }: Props) => {
     return (
         <div className={styles.box}>
             {!isEdit
-                ? <div className={styles.textBox} onClick={onTextClickHandler}>{text}</div>
+                ? <div className={styles.textBox} onDoubleClick={onTextClickHandler}>{text}</div>
                 : <Input value={inputText} onChange={onChangeHandler} type="text" onBlur={editOnBlurHandler} autoFocus={true} />
             }
         </div>

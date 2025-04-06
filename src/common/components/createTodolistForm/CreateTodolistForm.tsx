@@ -1,27 +1,28 @@
 import { ChangeEvent, useState } from "react";
 import styles from "./CreateTodolistForm.module.css"
-import { nanoid } from "@reduxjs/toolkit";
-import { TodolistType, TodoTaskType } from "@/features/todolists/ui/Todolists/Todolists";
 import { Input } from "../input/Input";
 import { Button } from "../button/Button";
-import DeleteIcon from "@/common/theme/DeleteIcon";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { createTodolist } from "@/features/todolists/model/todolists-slice";
 
-type Props = {
-  createTodo: (newTodo: TodolistType) => void
+type Props ={
+  createTodo: (title: string) => void
 }
 
-export const CreateTodolistForm = ({ createTodo }: Props) => {
+export const CreateTodolistForm = ({ createTodo }:Props) => {
   const [title, setTitle] = useState<string>("");
-  const [taskList, setTaskList] = useState<Array<TodoTaskType>>([]);
+  // const [taskList, setTaskList] = useState<Array<CreateTodolistTasks>>([]);
   const [errorText, setErrorText] = useState<string | null>(null)
+  const dispatch = useAppDispatch()
+  
 
   const minTitleLenght = 5
   const maxTitleLenght = 25
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setTaskList(taskList.map(item => item.id === name ? { ...item, text: value } : item))
-  }
+  // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target
+  //   setTaskList(taskList.map(item => item.id === name ? { ...item, text: value } : item))
+  // }
 
   const createTodoHandler = () => {
     if (title.trim() === "") {
@@ -31,34 +32,16 @@ export const CreateTodolistForm = ({ createTodo }: Props) => {
       setErrorText(`Title must contains ${minTitleLenght} to ${maxTitleLenght} characters`)
       return
     }
-
-    const filteredTasks = taskList.filter(item => item.text !== "")
-
-    const newTodo: TodolistType = { id: nanoid(), status: "Todo", filter: "all", title: title, todoTasks: filteredTasks }
-    createTodo(newTodo)
+    createTodo(title)
+    dispatch(createTodolist(title))
     setErrorText(null)
     setTitle("")
-    setTaskList([])
   }
 
   const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value)
     setErrorText(null)
   }
-
-  const createTaskInputHandler = () => {
-    if (taskList.length >= 6) {
-      return
-    } else {
-      setTaskList([...taskList, { id: nanoid(), text: "", isDone: false }])
-    }
-
-  }
-
-  const deleteTaskInputHandler = (taskId: string) => {
-    setTaskList(taskList.filter(item => item.id !== taskId))
-  }
-
 
   return (
     <div className={styles.formBlock}>
@@ -68,7 +51,7 @@ export const CreateTodolistForm = ({ createTodo }: Props) => {
       </div>
       <div className={styles.tasksBlock}>
         <h5>Task items</h5>
-        <ul>
+        {/* <ul>
           {taskList.map(value => {
             return (
               <li key={value.id} >
@@ -84,7 +67,7 @@ export const CreateTodolistForm = ({ createTodo }: Props) => {
           <div className={styles.createTaskButton}>
             <Button onClick={createTaskInputHandler} disabled={taskList.length >= 6}>More tasks</Button>
           </div>
-        </ul>
+        </ul> */}
       </div>
       <div className={styles.errorMessage}>
         {errorText && errorText}

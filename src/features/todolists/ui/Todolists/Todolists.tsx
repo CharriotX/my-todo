@@ -1,36 +1,26 @@
 import { useAppSelector } from "@/common/hooks/useAppSelector";
 import { TodoListItem } from "./TodolistItem/TodoListItem";
-import styles from "@/features/todolists/ui/Todolists/Todolist.module.css"
-import { selectTodolists } from "@/features/todolists/model/todolists-selector";
-
-export type TodoStatusType = "Todo" | "In Progress" | "Completed"
-export type FilterTaskType = "all" | "active" | "completed"
-export type TodoTaskType = {
-  id: string
-  text: string
-  isDone: boolean
-}
-
-export type TodolistType = {
-  id: string
-  title: string
-  status: TodoStatusType
-  filter: FilterTaskType
-  todoTasks: TodoTaskType[]
-}
+import styles from "@/features/todolists/ui/Todolists/Todolists.module.css";
+import {
+  selectTodolists,
+  setTodolists,
+} from "../../model/todolists-slice";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 
 export const Todolists = () => {
   const todolists = useAppSelector(selectTodolists);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setTodolists());
+  }, []);
 
   return (
     <div className={styles.todolists}>
       {todolists.map((list) => {
-        return (
-          <TodoListItem
-            todolist={list}
-          ></TodoListItem>
-        );
+        return <TodoListItem todolist={list} key={list.id}></TodoListItem>;
       })}
-    </div >
+    </div>
   );
 };

@@ -1,8 +1,0 @@
-.todolists {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(5, 1fr);
-    align-items: start;
-    gap: 16px;
-    padding: 16px;
-}

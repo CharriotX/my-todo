@@ -2,7 +2,6 @@
     background-color: var(--header-background);
     height: 60px;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-    padding: 0 30px;
 }
 
 .navigation {
@@ -10,13 +9,32 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 30px;
 
     h2 {
         color: #0080FF;
     }
+}
 
+.buttonsBlock {
+    display: flex;
+    align-items: center;
 }
 
 .buttonsBlock button {
     padding: 10px 20px;
+}
+
+.themeToggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 1rem;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.themeToggle:hover {
+    color: var(--link-hover-color);
 }

@@ -1,13 +1,25 @@
+import { tasksSlice } from "@/features/todolists/model/tasks-slice";
+import { todolistSlice } from "@/features/todolists/model/todolists-slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { todolistsReducer } from "../features/todolists/model/todolists-reduser";
+import { appSlice } from "./app-slice";
+import { loadState, saveState } from "@/common/utils/LocalStorageUtils";
+
+const persistedState = loadState();
 
 const rootReducer = combineReducers({
-    todolists: todolistsReducer
-})
+  todolists: todolistSlice.reducer,
+  tasks: tasksSlice.reducer,
+  app: appSlice.reducer
+});
 
 export const store = configureStore({
-    reducer: rootReducer
+  reducer: rootReducer,
+  preloadedState: persistedState
+});
+
+store.subscribe(() => {
+  saveState(store.getState())
 })
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
