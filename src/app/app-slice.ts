@@ -1,9 +1,12 @@
+import { loadState } from "@/common/utils/LocalStorageUtils";
 import { createSlice } from "@reduxjs/toolkit";
+
+const savedTheme = loadState()
 
 export const appSlice = createSlice({
     name: "app",
     initialState: {
-        themeMode: "light" as ThemeMode,
+        themeMode: savedTheme || "light" as ThemeMode,
         requestStatus: 'succeeded' as RequestStatusType
     },
     reducers: (create) => ({
