@@ -63,7 +63,6 @@ export const tasksSlice = createSliceWithThunks({
     updateTask: create.asyncThunk(
       async (args: { todolistId: string, taskId: string, task: UpdateTaskModel }, { dispatch, rejectWithValue }) => {
         const { todolistId, taskId, task } = args
-        console.log(task)
         const model: UpdateTaskModel = {
           ...task
         }
