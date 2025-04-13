@@ -2,9 +2,7 @@ import { tasksSlice } from "@/features/todolists/model/tasks-slice";
 import { todolistSlice } from "@/features/todolists/model/todolists-slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { appSlice } from "./app-slice";
-import { loadState, saveState } from "@/common/utils/LocalStorageUtils";
-
-const persistedState = loadState();
+import { saveState } from "@/common/utils/LocalStorageUtils";
 
 const rootReducer = combineReducers({
   todolists: todolistSlice.reducer,
@@ -14,7 +12,6 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  preloadedState: persistedState
 });
 
 store.subscribe(() => {

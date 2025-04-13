@@ -2,8 +2,7 @@ import { TaskPriority, TaskStatus } from "@/common/enums"
 import { beforeEach, expect, test } from "vitest"
 import { createTask, deleteTask, tasksSlice, updateTask } from "../tasks-slice"
 import { nanoid } from "@reduxjs/toolkit"
-import { createTodolist, deleteTodolist, todolistSlice } from "../todolists-slice"
-import exp from "constants"
+import { createTodolist, deleteTodolist } from "../todolists-slice"
 
 let startState = {}
 let todolistId1: string
@@ -99,7 +98,6 @@ test("task should be created at correct array", () => {
 })
 
 test("should be correct delete task", () => {
-
     const endState = tasksSlice.reducer(
         startState,
         deleteTask.fulfilled({ todolistId: "todolistId2", taskId: "2", }, "requestId", {

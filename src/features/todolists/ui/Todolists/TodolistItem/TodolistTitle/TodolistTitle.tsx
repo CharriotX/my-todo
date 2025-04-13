@@ -13,7 +13,7 @@ export const TodolistTitle = ({ todolist }: Props) => {
     const dispatch = useAppDispatch()
 
     const updateTodoTitle = (newTitle: string) => {
-        dispatch(updateTodolistTitle({todolistId: todolist.id, title: newTitle}))
+        dispatch(updateTodolistTitle({ todolistId: todolist.id, title: newTitle }))
     }
 
     const deleteTodo = () => {
@@ -22,8 +22,8 @@ export const TodolistTitle = ({ todolist }: Props) => {
 
     return (
         <div className={styles.box}>
-            <EditableInput text={todolist.title} updateItem={updateTodoTitle}></EditableInput>
-            <Button buttonType="remove" onClick={deleteTodo}>
+            <EditableInput text={todolist.title} updateItem={updateTodoTitle} disabled={todolist.entityStatus === "loading"}></EditableInput>
+            <Button buttonType="remove" onClick={deleteTodo} disabled={todolist.entityStatus === "loading"}>
                 <DeleteIcon></DeleteIcon>
             </Button>
         </div>

@@ -34,7 +34,6 @@ test("correct create todolist", () => {
         order: 1
     }
     const action = createTodolist.fulfilled({ todolist }, "requestId", title)
-
     const endState = todolistSlice.reducer(startState, action)
 
     expect(endState.length).toBe(3)
@@ -43,7 +42,6 @@ test("correct create todolist", () => {
 
 test("correct change todolist title", () => {
     const title = "todolist33"
-
     const action = updateTodolistTitle.fulfilled({ todolistId: todolistId1, title }, "requestId", { todolistId: todolistId1, title })
     const endState = todolistSlice.reducer(startState, action)
 

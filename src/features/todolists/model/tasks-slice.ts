@@ -2,7 +2,8 @@ import { setRequestStatus } from "@/app/app-slice";
 import { taskApi } from "../api/taskApi";
 import { DomainTask, UpdateTaskModel } from "../api/taskApi.types";
 import { todolistSlice } from "./todolists-slice";
-import { createSliceWithThunks } from "@/common/utils";
+import { createSliceWithThunks, handleAppError, handleCatchError } from "@/common/utils";
+import { ResultCode } from "@/common/enums";
 
 
 
@@ -17,8 +18,9 @@ export const tasksSlice = createSliceWithThunks({
           const res = await taskApi.getTasks(todolistId);
           dispatch(setRequestStatus({ status: "succeeded" }))
           return { todolistId, tasks: res.data.items };
-        } catch (err) {
-          return rejectWithValue(null)
+        } catch (error) {
+          handleCatchError({ error, dispatch })
+          return rejectWithValue(null);
         }
       },
       {
@@ -32,10 +34,15 @@ export const tasksSlice = createSliceWithThunks({
         try {
           dispatch(setRequestStatus({ status: "loading" }))
           const res = await taskApi.createTask(todolistId, title);
-          dispatch(setRequestStatus({ status: "succeeded" }))
-          return { task: res.data.data.item }
-
-        } catch (err) {
+          if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setRequestStatus({ status: "succeeded" }))
+            return { task: res.data.data.item }
+          } else {
+            handleAppError({ data: res.data, dispatch })
+            return rejectWithValue(null)
+          }
+        } catch (error: unknown) {
+          handleCatchError({ error, dispatch })
           return rejectWithValue(null);
         }
       }, {
@@ -48,10 +55,16 @@ export const tasksSlice = createSliceWithThunks({
         const { todolistId, taskId } = args;
         try {
           dispatch(setRequestStatus({ status: "loading" }))
-          await taskApi.deleteTask(todolistId, taskId);
-          dispatch(setRequestStatus({ status: "succeeded" }))
-          return { todolistId, taskId }
-        } catch (err) {
+          const res = await taskApi.deleteTask(todolistId, taskId);
+          if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setRequestStatus({ status: "succeeded" }))
+            return { todolistId, taskId }
+          } else {
+            handleAppError({ data: res.data, dispatch })
+            return rejectWithValue(null)
+          }
+        } catch (error) {
+          handleCatchError({ error, dispatch })
           return rejectWithValue(null);
         }
       }, {
@@ -69,9 +82,15 @@ export const tasksSlice = createSliceWithThunks({
         try {
           dispatch(setRequestStatus({ status: "loading" }))
           const res = await taskApi.updateTask(todolistId, taskId, model);
-          dispatch(setRequestStatus({ status: "succeeded" }))
-          return { task: res.data.data.item }
-        } catch (err) {
+          if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setRequestStatus({ status: "succeeded" }))
+            return { task: res.data.data.item }
+          } else {
+            handleAppError({ data: res.data, dispatch })
+            return rejectWithValue(null)
+          }
+        } catch (error: unknown) {
+          handleCatchError({ error, dispatch })
           return rejectWithValue(null);
         }
       },
@@ -91,7 +110,6 @@ export const tasksSlice = createSliceWithThunks({
       (state, action) => {
         if (action.payload?.todolist) {
           state[action.payload.todolist.id] = [];
-          console.log(state[action.payload.todolist.id])
         }
       }
     ),
