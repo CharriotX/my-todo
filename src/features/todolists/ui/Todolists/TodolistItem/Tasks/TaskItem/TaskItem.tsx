@@ -7,32 +7,36 @@ import { DomainTask } from "@/features/todolists/api/taskApi.types";
 import { deleteTask, updateTask } from "@/features/todolists/model/tasks-slice";
 import { ChangeEvent } from "react";
 import { TaskStatus } from "@/common/enums";
+import { DomainTodolist } from "@/features/todolists/model/todolists-slice";
 
 type Props = {
   task: DomainTask;
-  todolistId: string;
+  todolist: DomainTodolist;
 };
 
-const TaskItem = ({ task, todolistId }: Props) => {
+const TaskItem = ({ task, todolist }: Props) => {
   const dispatch = useAppDispatch();
+
   const selectTaskHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateTask({ todolistId, taskId: task.id, task: { ...task, status: e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New } }))
+    dispatch(updateTask({ todolistId: todolist.id, taskId: task.id, task: { ...task, status: e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New } }))
   }
   const updateTaskTitleHandler = (newTitle: string) => {
-    dispatch(updateTask({ todolistId, taskId: task.id, task: { ...task, title: newTitle } }))
+    dispatch(updateTask({ todolistId: todolist.id, taskId: task.id, task: { ...task, title: newTitle } }))
   }
   const deleteTaskHandler = () => {
-    dispatch(deleteTask({ todolistId, taskId: task.id }))
+    dispatch(deleteTask({ todolistId: todolist.id, taskId: task.id }))
   }
+
+  console.log(todolist.entityStatus)
 
   return (
     <li className={styles.item}>
       <input type="checkbox" onChange={selectTaskHandler} checked={task.status === TaskStatus.Completed ? true : false}></input>
       <div className={styles.itemText}>
-        <EditableInput text={task.title} updateItem={updateTaskTitleHandler} />
+        <EditableInput text={task.title} updateItem={updateTaskTitleHandler} disabled={todolist.entityStatus === "loading"} />
       </div>
       <div className={styles.itemButton}>
-        <Button buttonType="remove" onClick={deleteTaskHandler}>
+        <Button buttonType="remove" onClick={deleteTaskHandler} disabled={todolist.entityStatus === "loading"}>
           <DeleteIcon></DeleteIcon>
         </Button>
       </div>

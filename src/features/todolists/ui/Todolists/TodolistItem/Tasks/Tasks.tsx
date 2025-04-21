@@ -33,7 +33,7 @@ const Tasks = ({ todolist }: Props) => {
       ) : (
         filteredTaskItems &&
         filteredTaskItems.map((item) => {
-          return <TaskItem task={item} todolistId={todolist.id} key={item.id} />;
+          return <TaskItem task={item} todolist={todolist} key={item.id} />;
         })
       )}
     </ul>
