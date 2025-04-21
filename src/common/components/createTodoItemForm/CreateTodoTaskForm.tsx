@@ -5,7 +5,7 @@ import { Button } from "../button/Button";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { createTask } from "@/features/todolists/model/tasks-slice";
 type Props = {
-  todolistId:string
+  todolistId: string
   disabled?: boolean
   placeholder?: string
 };
@@ -14,9 +14,6 @@ const CreateTodoTaskForm = ({ todolistId, disabled, placeholder }: Props) => {
   const [inputText, setInputText] = useState<string>("");
   const [errorText, setErrorText] = useState<null | string>(null);
   const dispatch = useAppDispatch()
-
-  const minTitleLenght = 5;
-  const maxTitleLenght = 25;
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputText(e.currentTarget.value);
@@ -27,16 +24,8 @@ const CreateTodoTaskForm = ({ todolistId, disabled, placeholder }: Props) => {
     if (inputText.trim() === "") {
       setErrorText("Empty title. Try more");
       return;
-    } else if (
-      inputText.length < minTitleLenght ||
-      inputText.length > maxTitleLenght
-    ) {
-      setErrorText(
-        `Title must contains ${minTitleLenght} to ${maxTitleLenght} characters`
-      );
-      return;
     }
-    dispatch(createTask({todolistId, title: inputText}))
+    dispatch(createTask({ todolistId, title: inputText }))
     setInputText("");
     setErrorText(null);
   };

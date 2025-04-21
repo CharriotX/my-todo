@@ -3,11 +3,12 @@ import { Input } from '../input/Input'
 import styles from "./EditableInput.module.css"
 
 type Props = {
-    text: string
+    text: string,
+    disabled: boolean,
     updateItem: (newText: string) => void
 }
 
-export const EditableInput = ({ text, updateItem }: Props) => {
+export const EditableInput = ({ text, disabled, updateItem }: Props) => {
     const [inputText, setInputText] = useState<string>(text)
     const [isEdit, setIsEdit] = useState<boolean>(false)
 
@@ -28,7 +29,7 @@ export const EditableInput = ({ text, updateItem }: Props) => {
         <div className={styles.box}>
             {!isEdit
                 ? <div className={styles.textBox} onDoubleClick={onTextClickHandler}>{text}</div>
-                : <Input value={inputText} onChange={onChangeHandler} type="text" onBlur={editOnBlurHandler} autoFocus={true} />
+                : <Input value={inputText} onChange={onChangeHandler} type="text" onBlur={editOnBlurHandler} autoFocus={true} disabled={disabled} />
             }
         </div>
     )
