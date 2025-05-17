@@ -1,11 +1,5 @@
 .item {
     display: flex;
-
-    input[type="checkbox"] {
-        transform: scale(1.5);
-        margin: 5px;
-        z-index: 0;
-    }
 }
 
 .itemText {

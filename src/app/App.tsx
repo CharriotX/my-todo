@@ -1,9 +1,9 @@
 import "./App.css";
 import { Header } from "../common/components/header/Header";
 import "@/common/theme/Global.css"
-import { Todolists } from "@/features/todolists/ui/Todolists/Todolists";
 import { Container } from "@/common/components/container/Container";
 import { ErrorSnackbar } from "@/common/components/errorSnackbar/ErrorSnackbar";
+import { Routing } from "@/common/routing";
 
 function App() {
 
@@ -11,7 +11,7 @@ function App() {
     <>
       <Header></Header>
       <Container>
-        <Todolists></Todolists>
+        <Routing></Routing>
         <ErrorSnackbar></ErrorSnackbar>
       </Container>
     </>

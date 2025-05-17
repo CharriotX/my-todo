@@ -8,6 +8,7 @@ import { deleteTask, updateTask } from "@/features/todolists/model/tasks-slice";
 import { ChangeEvent } from "react";
 import { TaskStatus } from "@/common/enums";
 import { DomainTodolist } from "@/features/todolists/model/todolists-slice";
+import { Checkbox } from "@/common/components/checkbox/Checkbox";
 
 type Props = {
   task: DomainTask;
@@ -27,11 +28,9 @@ const TaskItem = ({ task, todolist }: Props) => {
     dispatch(deleteTask({ todolistId: todolist.id, taskId: task.id }))
   }
 
-  console.log(todolist.entityStatus)
-
   return (
     <li className={styles.item}>
-      <input type="checkbox" onChange={selectTaskHandler} checked={task.status === TaskStatus.Completed ? true : false}></input>
+      <Checkbox onChange={selectTaskHandler} checked={task.status === TaskStatus.Completed ? true : false}></Checkbox>
       <div className={styles.itemText}>
         <EditableInput text={task.title} updateItem={updateTaskTitleHandler} disabled={todolist.entityStatus === "loading"} />
       </div>

@@ -1,6 +1,6 @@
 import { setRequestStatus } from "@/app/app-slice";
 import { taskApi } from "../api/taskApi";
-import { DomainTask, UpdateTaskModel } from "../api/taskApi.types";
+import { DomainTask, DomainTaskSchema, UpdateTaskModel } from "../api/taskApi.types";
 import { todolistSlice } from "./todolists-slice";
 import { createSliceWithThunks, handleAppError, handleCatchError } from "@/common/utils";
 import { ResultCode } from "@/common/enums";
@@ -16,8 +16,9 @@ export const tasksSlice = createSliceWithThunks({
         try {
           dispatch(setRequestStatus({ status: "loading" }))
           const res = await taskApi.getTasks(todolistId);
+          const tasks = DomainTaskSchema.array().parse(res.data.items)
           dispatch(setRequestStatus({ status: "succeeded" }))
-          return { todolistId, tasks: res.data.items };
+          return { todolistId, tasks };
         } catch (error) {
           handleCatchError({ error, dispatch })
           return rejectWithValue(null);
