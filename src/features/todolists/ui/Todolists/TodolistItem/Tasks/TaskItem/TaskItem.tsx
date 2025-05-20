@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
-import { Button } from "@/common/components/button/Button";
-import { EditableInput } from "@/common/components/editableInput/EditableInput";
+import { Button } from "@/common/components/Button/Button";
+import { EditableInput } from "@/common/components/EditableInput/EditableInput";
 import styles from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.module.css";
 import DeleteIcon from "@/common/theme/DeleteIcon";
 import { DomainTask } from "@/features/todolists/api/taskApi.types";
@@ -8,7 +8,7 @@ import { deleteTask, updateTask } from "@/features/todolists/model/tasks-slice";
 import { ChangeEvent } from "react";
 import { TaskStatus } from "@/common/enums";
 import { DomainTodolist } from "@/features/todolists/model/todolists-slice";
-import { Checkbox } from "@/common/components/checkbox/Checkbox";
+import { Checkbox } from "@/common/components/Checkbox/Checkbox";
 
 type Props = {
   task: DomainTask;

@@ -1,12 +1,14 @@
 import styles from "@/common/components/header/Header.module.css"
-import { Modal } from "../modal/Modal";
+import { Modal } from "../Modal/Modal";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
-import { Button } from "../button/Button";
-import { CreateTodolistForm } from "../createTodolistForm/CreateTodolistForm";
+import { Button } from "../Button/Button";
+import { CreateTodolistForm } from "../CreateTodolistForm/CreateTodolistForm";
 import { useAppSelector } from "@/common/hooks/useAppSelector";
 import { changeThemeMode, selectRequestStatus, selectTheme } from "@/app/app-slice";
 import LinearProgress from '@mui/material/LinearProgress';
+import { NavLink } from "react-router";
+import { Path } from "@/common/routing/Routing";
 
 export const Header = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
@@ -29,12 +31,18 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <nav className={styles.navigation}>
-        <h2>Todo</h2>
+        <NavLink to={Path.Main}>
+          <h2>Todo</h2>
+        </NavLink>
         <div className={styles.buttonsBlock}>
-          <button onClick={toggleTheme} className={styles.themeToggle}>
+          <Button onClick={toggleTheme} className={styles.themeToggle}>
             {theme === 'light' ? '🌙' : '☀️'}
-          </button>
+          </Button>
           <Button onClick={() => setIsOpenModal(true)}>Create todo</Button>
+          <NavLink to={Path.Login}>
+            <Button>Sign In</Button>
+          </NavLink>
+
         </div>
         <Modal isOpen={isOpenModal} setIsOpen={setIsOpenModal}>
           <CreateTodolistForm createTodo={createTodo}></CreateTodolistForm>

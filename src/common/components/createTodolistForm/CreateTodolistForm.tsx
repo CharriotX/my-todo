@@ -1,20 +1,20 @@
 import { ChangeEvent, useState } from "react";
 import styles from "./CreateTodolistForm.module.css"
-import { Input } from "../input/Input";
-import { Button } from "../button/Button";
+import { Input } from "../Input/Input";
+import { Button } from "../Button/Button";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { createTodolist } from "@/features/todolists/model/todolists-slice";
 
-type Props ={
+type Props = {
   createTodo: (title: string) => void
 }
 
-export const CreateTodolistForm = ({ createTodo }:Props) => {
+export const CreateTodolistForm = ({ createTodo }: Props) => {
   const [title, setTitle] = useState<string>("");
   // const [taskList, setTaskList] = useState<Array<CreateTodolistTasks>>([]);
   const [errorText, setErrorText] = useState<string | null>(null)
   const dispatch = useAppDispatch()
-  
+
 
   const minTitleLenght = 5
   const maxTitleLenght = 25

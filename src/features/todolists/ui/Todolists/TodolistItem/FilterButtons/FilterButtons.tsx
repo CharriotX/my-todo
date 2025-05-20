@@ -1,4 +1,4 @@
-import { Button } from "@/common/components/button/Button";
+import { Button } from "@/common/components/Button/Button";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import styles from "./FilterButtons.module.css";
 import {

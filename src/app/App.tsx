@@ -1,8 +1,8 @@
 import "./App.css";
-import { Header } from "../common/components/header/Header";
+import { Header } from "../common/components/Header/Header";
 import "@/common/theme/Global.css"
-import { Container } from "@/common/components/container/Container";
-import { ErrorSnackbar } from "@/common/components/errorSnackbar/ErrorSnackbar";
+import { Container } from "@/common/components/Container/Container";
+import { ErrorSnackbar } from "@/common/components/ErrorSnackbar/ErrorSnackbar";
 import { Routing } from "@/common/routing";
 
 function App() {

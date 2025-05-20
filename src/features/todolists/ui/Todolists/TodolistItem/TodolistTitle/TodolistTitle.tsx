@@ -1,7 +1,7 @@
-import { EditableInput } from "@/common/components/editableInput/EditableInput"
+import { EditableInput } from "@/common/components/EditableInput/EditableInput"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch"
 import styles from "./TodolistTitle.module.css"
-import { Button } from "@/common/components/button/Button"
+import { Button } from "@/common/components/Button/Button"
 import DeleteIcon from "@/common/theme/DeleteIcon"
 import { deleteTodolist, DomainTodolist, updateTodolistTitle } from "@/features/todolists/model/todolists-slice"
 

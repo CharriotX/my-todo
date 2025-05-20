@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import styles from "./CreateTodoTaskForm.module.css"
-import { Input } from "../input/Input";
-import { Button } from "../button/Button";
+import { Input } from "../Input/Input";
+import { Button } from "../Button/Button";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { createTask } from "@/features/todolists/model/tasks-slice";
 type Props = {
