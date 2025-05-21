@@ -9,11 +9,13 @@ import { changeThemeMode, selectRequestStatus, selectTheme } from "@/app/app-sli
 import LinearProgress from '@mui/material/LinearProgress';
 import { NavLink } from "react-router";
 import { Path } from "@/common/routing/Routing";
+import { logout, selectIsLoggedIn } from "@/features/auth/model/auth-slice";
 
 export const Header = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
   const theme = useAppSelector(selectTheme)
   const requesStatus = useAppSelector(selectRequestStatus)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -28,6 +30,10 @@ export const Header = () => {
     dispatch(changeThemeMode({ themeMode: theme === "light" ? "dark" : "light" }))
   }
 
+  const logoutHandler = () => {
+    dispatch(logout())
+  }
+
   return (
     <header className={styles.header}>
       <nav className={styles.navigation}>
@@ -39,10 +45,12 @@ export const Header = () => {
             {theme === 'light' ? '🌙' : '☀️'}
           </Button>
           <Button onClick={() => setIsOpenModal(true)}>Create todo</Button>
-          <NavLink to={Path.Login}>
-            <Button>Sign In</Button>
-          </NavLink>
 
+          {isLoggedIn
+            ? <Button onClick={logoutHandler}>Sign out</Button>
+            : <Button>Sign in</Button>
+
+          }
         </div>
         <Modal isOpen={isOpenModal} setIsOpen={setIsOpenModal}>
           <CreateTodolistForm createTodo={createTodo}></CreateTodolistForm>

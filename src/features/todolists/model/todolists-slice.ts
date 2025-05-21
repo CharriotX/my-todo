@@ -4,6 +4,7 @@ import { Todolist } from "../api/todolistApi.types";
 import { createSliceWithThunks, handleAppError, handleCatchError } from "@/common/utils";
 import { RequestStatus } from "@/common/types/types";
 import { ResultCode } from "@/common/enums";
+import { clearData } from "@/common/actions";
 
 export const todolistSlice = createSliceWithThunks({
   name: "todolists",
@@ -23,9 +24,9 @@ export const todolistSlice = createSliceWithThunks({
       },
       {
         fulfilled: (state, action) => {
-          action.payload?.todolists.forEach((todo) =>
+          action.payload?.todolists.forEach((todo) => (
             state.push({ ...todo, filter: "all", entityStatus: "idle" })
-          );
+          ));
         },
       }
     ),
@@ -123,11 +124,16 @@ export const todolistSlice = createSliceWithThunks({
       if (todo) {
         todo.entityStatus = status
       }
-    })
+    }),
   }),
   selectors: {
     selectTodolists: (state) => state,
   },
+  extraReducers: builder => {
+    builder.addCase(clearData, (state, action) => {
+      return []
+    })
+  }
 });
 
 export const {

@@ -4,6 +4,7 @@ import { DomainTask, DomainTaskSchema, UpdateTaskModel } from "../api/taskApi.ty
 import { todolistSlice } from "./todolists-slice";
 import { createSliceWithThunks, handleAppError, handleCatchError } from "@/common/utils";
 import { ResultCode } from "@/common/enums";
+import { clearData } from "@/common/actions";
 
 
 
@@ -112,20 +113,22 @@ export const tasksSlice = createSliceWithThunks({
         if (action.payload?.todolist) {
           state[action.payload.todolist.id] = [];
         }
-      }
-    ),
+      }),
       builder.addCase(
         todolistSlice.actions.deleteTodolist.fulfilled,
         (state, action) => {
           if (action.payload?.todolistId !== undefined) {
             delete state[action.payload.todolistId];
           }
-        }
-      );
+        }),
+      builder.addCase(clearData, (_state, _action) => {
+        return {}
+      })
   },
   selectors: {
     selectTasks: (state) => state,
   },
+
 });
 
 

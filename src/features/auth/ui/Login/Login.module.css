@@ -12,9 +12,11 @@
             margin: 5px;
         }
     }
+
     form {
         margin-top: 100px;
-        /* border: 1px solid var(--border-background); */
+        border: 1px solid var(--border-background);
+        color: var(--text-color);
         border-radius: 10px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
         padding: 20px;
@@ -24,7 +26,8 @@
         display: block;
         margin: 5px 0;
     }
-    .loginButton{
+
+    .loginButton {
         display: flex;
         justify-content: center;
     }

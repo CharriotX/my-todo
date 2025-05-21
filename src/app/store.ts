@@ -3,11 +3,13 @@ import { todolistSlice } from "@/features/todolists/model/todolists-slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { appSlice } from "./app-slice";
 import { saveState } from "@/common/utils/LocalStorageUtils";
+import { authSlice } from "@/features/auth/model/auth-slice";
 
 const rootReducer = combineReducers({
-  todolists: todolistSlice.reducer,
-  tasks: tasksSlice.reducer,
-  app: appSlice.reducer
+  [todolistSlice.name]: todolistSlice.reducer,
+  [tasksSlice.name]: tasksSlice.reducer,
+  [appSlice.name]: appSlice.reducer,
+  [authSlice.name]: authSlice.reducer
 });
 
 export const store = configureStore({
