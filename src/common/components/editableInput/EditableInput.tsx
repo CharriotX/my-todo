@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import { Input } from '../input/Input'
+import { Input } from '../Input/Input'
 import styles from "./EditableInput.module.css"
 
 type Props = {

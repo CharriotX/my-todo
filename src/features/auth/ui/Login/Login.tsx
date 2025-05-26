@@ -1,23 +1,34 @@
-import { Button } from "@/common/components/button/Button"
+import { Button } from "@/common/components/Button/Button"
 import styles from "./Login.module.css"
-import { Input } from "@/common/components/input/Input"
-import { Checkbox } from "@/common/components/checkbox/Checkbox"
+import { Input } from "@/common/components/Input/Input"
 import { SubmitHandler, useForm } from "react-hook-form";
-import { loginSchema } from "../../lib/schemas";
+import { Inputs, loginSchema } from "../../lib/schemas";
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from "zod";
+import { Checkbox } from "@/common/components/Checkbox/Checkbox";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { useLoginMutation } from "../../api/authApi";
+import { ResultCode } from "@/common/enums";
+import { AUTH_TOKEN } from "@/common/constants";
+import { setIsLoggedIn } from "@/app/app-slice";
 
-type Inputs = z.infer<typeof loginSchema>
 
 export const Login = () => {
+    const dispatch = useAppDispatch()
+    const [login] = useLoginMutation()
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>({
         resolver: zodResolver(loginSchema),
         defaultValues: { email: "", password: "", rememberMe: false },
     })
 
-    const onSubmit: SubmitHandler<Inputs> = _data => {
-        reset()
+    const onSubmit: SubmitHandler<Inputs> = data => {
+        login(data).then((res) => {
+            if (res.data?.resultCode === ResultCode.Success) {
+                dispatch(setIsLoggedIn({ isLoggedIn: true }))
+                localStorage.setItem(AUTH_TOKEN, res.data.data.token)
+                reset()
+            }
+        })
     }
 
     return (

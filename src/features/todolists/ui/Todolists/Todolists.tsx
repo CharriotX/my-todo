@@ -1,24 +1,27 @@
-import { useAppSelector } from "@/common/hooks/useAppSelector";
 import { TodoListItem } from "./TodolistItem/TodoListItem";
 import styles from "@/features/todolists/ui/Todolists/Todolists.module.css";
-import {
-  selectTodolists,
-  setTodolists,
-} from "../../model/todolists-slice";
-import { useEffect } from "react";
-import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { useGetTodolistsQuery } from "../../api/todolistApi";
+import { TodolistSkeleton } from "./TodolistSkeleton/TodolistSkeleton";
+import { Container } from "@/common/components/Container/Container";
 
 export const Todolists = () => {
-  const todolists = useAppSelector(selectTodolists);
-  const dispatch = useAppDispatch();
+  const { data: todolists, isLoading } = useGetTodolistsQuery()
 
-  useEffect(() => {
-    dispatch(setTodolists());
-  }, []);
+  if (isLoading) {
+    return (
+      <Container>
+        {Array(3)
+          .fill(null)
+          .map((_, id) => (
+            <TodolistSkeleton key={id} />
+          ))}
+      </Container>
+    )
+  }
 
   return (
     <div className={styles.todolists}>
-      {todolists.map((list) => {
+      {todolists?.map((list) => {
         return <TodoListItem todolist={list} key={list.id}></TodoListItem>;
       })}
     </div>

@@ -3,7 +3,7 @@ import { TodolistTitle } from "./TodolistTitle/TodolistTitle";
 import Tasks from "./Tasks/Tasks";
 import styles from "./TodolistItem.module.css"
 import { DomainTodolist } from "@/features/todolists/model/todolists-slice";
-import CreateTodoTaskForm from "@/common/components/createTodoItemForm/CreateTodoTaskForm";
+import CreateTodoTaskForm from "@/common/components/CreateTodoItemForm/CreateTodoTaskForm";
 
 type Props = {
   todolist: DomainTodolist;

@@ -1,11 +1,11 @@
-import { Button } from "@/common/components/button/Button";
+import { Button } from "@/common/components/Button/Button";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import styles from "./FilterButtons.module.css";
 import {
-    changeTodolistFilter,
     DomainTodolist,
     FilterValues,
 } from "@/features/todolists/model/todolists-slice";
+import { todolistApi } from "@/features/todolists/api/todolistApi";
 
 type Props = {
     todolist: DomainTodolist;
@@ -16,7 +16,14 @@ const FilterButtons = ({ todolist }: Props) => {
     const dispatch = useAppDispatch();
 
     const changeFilter = (filter: FilterValues) => {
-        dispatch(changeTodolistFilter({ todolistId: id, filter }));
+        dispatch(
+            todolistApi.util.updateQueryData("getTodolists", undefined, (state) => {
+                const todolist = state.find(todo => todo.id === id)
+                if (todolist) {
+                    todolist.filter = filter
+                }
+            })
+        )
     };
 
     return (
