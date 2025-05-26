@@ -5,24 +5,31 @@ import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { Button } from "../Button/Button";
 import { CreateTodolistForm } from "../CreateTodolistForm/CreateTodolistForm";
 import { useAppSelector } from "@/common/hooks/useAppSelector";
-import { changeThemeMode, selectRequestStatus, selectTheme } from "@/app/app-slice";
+import { changeThemeMode, selectIsLoggedIn, selectRequestStatus, selectTheme, setIsLoggedIn } from "@/app/app-slice";
 import LinearProgress from '@mui/material/LinearProgress';
 import { NavLink } from "react-router";
 import { Path } from "@/common/routing/Routing";
-import { logout, selectIsLoggedIn } from "@/features/auth/model/auth-slice";
+import { useCreateTodolistMutation } from "@/features/todolists/api/todolistApi";
+import { useLogoutMutation } from "@/features/auth/api/authApi";
+import { ResultCode } from "@/common/enums";
+import { AUTH_TOKEN } from "@/common/constants";
+import { baseApi } from "@/app/baseApi";
 
 export const Header = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
   const theme = useAppSelector(selectTheme)
   const requesStatus = useAppSelector(selectRequestStatus)
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const [logout] = useLogoutMutation()
   const dispatch = useAppDispatch()
+  const [createTodolist] = useCreateTodolistMutation()
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme]);
 
-  const createTodo = () => {
+  const createTodo = (title: string) => {
+    createTodolist(title)
     setIsOpenModal(prev => prev = false)
   }
 
@@ -31,7 +38,16 @@ export const Header = () => {
   }
 
   const logoutHandler = () => {
-    dispatch(logout())
+    logout()
+      .then((res) => {
+        if (res.data?.resultCode === ResultCode.Success) {
+          dispatch(setIsLoggedIn({ isLoggedIn: false }))
+          localStorage.removeItem(AUTH_TOKEN)
+        }
+      })
+      .then(() => {
+        dispatch(baseApi.util.invalidateTags(["Todolist", "Task"]))
+      })
   }
 
   return (
@@ -53,7 +69,7 @@ export const Header = () => {
           }
         </div>
         <Modal isOpen={isOpenModal} setIsOpen={setIsOpenModal}>
-          <CreateTodolistForm createTodo={createTodo}></CreateTodolistForm>
+          <CreateTodolistForm onCreateTodo={createTodo}></CreateTodolistForm>
         </Modal>
       </nav>
       {requesStatus === "loading" && <LinearProgress />}

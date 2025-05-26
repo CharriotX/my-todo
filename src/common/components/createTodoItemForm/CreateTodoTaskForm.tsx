@@ -2,8 +2,7 @@ import { ChangeEvent, useState } from "react";
 import styles from "./CreateTodoTaskForm.module.css"
 import { Input } from "../Input/Input";
 import { Button } from "../Button/Button";
-import { useAppDispatch } from "@/common/hooks/useAppDispatch";
-import { createTask } from "@/features/todolists/model/tasks-slice";
+import { useCreateTaskMutation } from "@/features/todolists/api/taskApi";
 type Props = {
   todolistId: string
   disabled?: boolean
@@ -13,7 +12,7 @@ type Props = {
 const CreateTodoTaskForm = ({ todolistId, disabled, placeholder }: Props) => {
   const [inputText, setInputText] = useState<string>("");
   const [errorText, setErrorText] = useState<null | string>(null);
-  const dispatch = useAppDispatch()
+  const [createTask] = useCreateTaskMutation()
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputText(e.currentTarget.value);
@@ -25,7 +24,7 @@ const CreateTodoTaskForm = ({ todolistId, disabled, placeholder }: Props) => {
       setErrorText("Empty title. Try more");
       return;
     }
-    dispatch(createTask({ todolistId, title: inputText }))
+    createTask({ todolistId, title: inputText })
     setInputText("");
     setErrorText(null);
   };
@@ -48,7 +47,7 @@ const CreateTodoTaskForm = ({ todolistId, disabled, placeholder }: Props) => {
       />
       <div className={styles.errorBox}>{errorText && errorText}</div>
       <Button onClick={onCreateHandler} disabled={disabled}>
-        Add
+        Create task
       </Button>
     </div>
   );

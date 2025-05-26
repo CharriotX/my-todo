@@ -6,20 +6,25 @@ import { ErrorSnackbar } from "@/common/components/ErrorSnackbar/ErrorSnackbar";
 import { Routing } from "@/common/routing";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { useEffect, useState } from "react";
-import { initializeApp } from "@/features/auth/model/auth-slice";
 import { CircularProgress } from "@mui/material";
 import styles from "./App.module.css"
+import { useMeQuery } from "@/features/auth/api/authApi";
+import { ResultCode } from "@/common/enums";
+import { setIsLoggedIn } from "./app-slice";
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false)
   const dispatch = useAppDispatch()
+  const { data, isLoading } = useMeQuery()
 
   useEffect(() => {
-    dispatch(initializeApp()).finally(() => {
-      setIsInitialized(true)
-    })
+    if (isLoading) return
+    setIsInitialized(true)
+    if (data?.resultCode === ResultCode.Success) {
+      dispatch(setIsLoggedIn({ isLoggedIn: true }))
+    }
 
-  }, [])
+  }, [isLoading])
 
   if (!isInitialized) {
     return (

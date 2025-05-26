@@ -1,19 +1,18 @@
 import { tasksSlice } from "@/features/todolists/model/tasks-slice";
 import { todolistSlice } from "@/features/todolists/model/todolists-slice";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { appSlice } from "./app-slice";
 import { saveState } from "@/common/utils/LocalStorageUtils";
-import { authSlice } from "@/features/auth/model/auth-slice";
-
-const rootReducer = combineReducers({
-  [todolistSlice.name]: todolistSlice.reducer,
-  [tasksSlice.name]: tasksSlice.reducer,
-  [appSlice.name]: appSlice.reducer,
-  [authSlice.name]: authSlice.reducer
-});
+import { baseApi } from "./baseApi";
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    [todolistSlice.name]: todolistSlice.reducer,
+    [tasksSlice.name]: tasksSlice.reducer,
+    [appSlice.name]: appSlice.reducer,
+    [baseApi.reducerPath]: baseApi.reducer
+  },
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware)
 });
 
 store.subscribe(() => {

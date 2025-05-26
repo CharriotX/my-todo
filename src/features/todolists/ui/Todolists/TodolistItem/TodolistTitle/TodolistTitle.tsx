@@ -1,23 +1,43 @@
 import { EditableInput } from "@/common/components/EditableInput/EditableInput"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch"
 import styles from "./TodolistTitle.module.css"
 import { Button } from "@/common/components/Button/Button"
 import DeleteIcon from "@/common/theme/DeleteIcon"
-import { deleteTodolist, DomainTodolist, updateTodolistTitle } from "@/features/todolists/model/todolists-slice"
+import { DomainTodolist } from "@/features/todolists/model/todolists-slice"
+import { todolistApi, useRemoveTodolistMutation, useUpdateTodolistTitleMutation, } from "@/features/todolists/api/todolistApi"
+import { useAppDispatch } from "@/common/hooks/useAppDispatch"
+import { RequestStatus } from "@/common/types/types"
 
 type Props = {
     todolist: DomainTodolist
 }
 
 export const TodolistTitle = ({ todolist }: Props) => {
+    const [removeTodolist] = useRemoveTodolistMutation()
+    const [updateTodolistTitle] = useUpdateTodolistTitleMutation()
     const dispatch = useAppDispatch()
 
+    const changeTodolistStatus = (entityStatus: RequestStatus) => {
+        dispatch(
+            todolistApi.util.updateQueryData('getTodolists', undefined, (state) => {
+                const todo = state.find(todo => todo.id === todolist.id)
+                if (todo) {
+                    todo.entityStatus = entityStatus
+                }
+            })
+        )
+    }
+
     const updateTodoTitle = (newTitle: string) => {
-        dispatch(updateTodolistTitle({ todolistId: todolist.id, title: newTitle }))
+        updateTodolistTitle({ id: todolist.id, title: newTitle })
     }
 
     const deleteTodo = () => {
-        dispatch(deleteTodolist(todolist.id))
+        changeTodolistStatus("loading")
+        removeTodolist(todolist.id)
+            .unwrap()
+            .catch(() => {
+                changeTodolistStatus('idle')
+            })
     }
 
     return (

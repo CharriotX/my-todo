@@ -6,11 +6,15 @@ import { Inputs, loginSchema } from "../../lib/schemas";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Checkbox } from "@/common/components/Checkbox/Checkbox";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
-import { login } from "../../model/auth-slice";
+import { useLoginMutation } from "../../api/authApi";
+import { ResultCode } from "@/common/enums";
+import { AUTH_TOKEN } from "@/common/constants";
+import { setIsLoggedIn } from "@/app/app-slice";
 
 
 export const Login = () => {
     const dispatch = useAppDispatch()
+    const [login] = useLoginMutation()
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>({
         resolver: zodResolver(loginSchema),
@@ -18,8 +22,13 @@ export const Login = () => {
     })
 
     const onSubmit: SubmitHandler<Inputs> = data => {
-        dispatch(login(data))
-        reset()
+        login(data).then((res) => {
+            if (res.data?.resultCode === ResultCode.Success) {
+                dispatch(setIsLoggedIn({ isLoggedIn: true }))
+                localStorage.setItem(AUTH_TOKEN, res.data.data.token)
+                reset()
+            }
+        })
     }
 
     return (
